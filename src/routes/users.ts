@@ -37,8 +37,8 @@ const userRouter: RouterFactory = () => {
   return router;
 };
 
-const empty = () => {
-  logger.info("Is or isnt admin");
-};
+// const empty = () => {
+//   logger.info("Is or isnt admin");
+// };
 
 export default userRouter;

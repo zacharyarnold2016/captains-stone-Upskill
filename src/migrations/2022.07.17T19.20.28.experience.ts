@@ -22,11 +22,11 @@ export const up: MigrationFn<Sequelize> = async ({ context }) => {
       type: new DataTypes.STRING(256),
       allowNull: false,
     },
-    startDate: {
+    start_date: {
       type: DataTypes.DATE,
       allowNull: false,
     },
-    endDate: {
+    end_date: {
       type: DataTypes.DATE,
       allowNull: false,
     },

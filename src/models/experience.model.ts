@@ -69,13 +69,14 @@ export class Experience
       },
       {
         tableName: "experiences",
+        underscored: true,
         sequelize,
       }
     );
   }
 
   static associate(models: Models, sequelize: Sequelize) {
-    Experience.belongsTo(models.user, {
+    Experience.belongsTo(User, {
       foreignKey: "user_id",
     });
   }

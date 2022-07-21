@@ -8,7 +8,7 @@ interface ProjectAttributes {
   description: string;
 }
 
-export class Project
+export default class Project
   extends Model<ProjectAttributes>
   implements ProjectAttributes
 {
@@ -47,6 +47,7 @@ export class Project
       },
       {
         tableName: "projects",
+        underscored: true,
         sequelize,
       }
     );

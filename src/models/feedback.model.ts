@@ -10,7 +10,7 @@ interface FeedbackAttributes {
   company_name: string;
 }
 
-export class Feedback
+export default class Feedback
   extends Model<FeedbackAttributes>
   implements FeedbackAttributes
 {

@@ -1,5 +1,6 @@
 import { DataTypes, Model, Optional, Sequelize } from "sequelize";
 import { Models } from "../interfaces/general";
+import { Experience } from "./experience.model";
 import { Project } from "./project.model";
 
 export enum UserRole {
@@ -116,5 +117,6 @@ export class User
     // Example of how to define a association.
     Project.belongsTo(models.user);
     User.hasMany(models.project);
+    User.hasMany(Experience)
   }
 }
