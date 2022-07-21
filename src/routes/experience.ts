@@ -34,14 +34,14 @@ const expRouter: RouterFactory = (context) => {
     }
   });
 
-  router.get("/", async (req, res) => {
+  router.get("/", reqLogger, async (req, res) => {
     const arr: Experience[] = await Experience.findAll();
     res.json({
       experiences: arr,
     });
   });
 
-  router.get("/:id", async (req, res) => {
+  router.get("/:id", reqLogger, async (req, res) => {
     const id = req.params.id;
     const arr: Experience[] = await Experience.findAll({
       where: { user_id: id },
@@ -53,7 +53,7 @@ const expRouter: RouterFactory = (context) => {
   });
 
   // TODO: Add Update Functionality
-  router.put("/:id", (req, res) => {
+  router.put("/:id", reqLogger, (req, res) => {
     res.json({
       userId: "number",
       companyName: "string",
@@ -64,7 +64,7 @@ const expRouter: RouterFactory = (context) => {
     });
   });
 
-  router.delete("/:id", async (req, res) => {
+  router.delete("/:id", reqLogger, async (req, res) => {
     const id = req.params.id;
     try {
       await Experience.destroy({ where: { id: id } });
