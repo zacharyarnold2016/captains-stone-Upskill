@@ -1,14 +1,16 @@
+// TODO: REFACTOR TO SERVICE
+
 import express from "express";
+import { ExtendedRequest } from "../interfaces/express";
 import { RouterFactory } from "../interfaces/general";
 import logger from "../libs/logger";
+import reqLogger from "../middleware/requestLog";
 import { Experience } from "../models/experience.model";
 
 const expRouter: RouterFactory = (context) => {
   const router = express.Router();
 
-  // Create and experience
-  router.post("/", async (req, res) => {
-    logger.info(req.body);
+  router.post("/", reqLogger, async (req: ExtendedRequest, res) => {
     const { user_id, company_name, role, startDate, endDate, description } =
       req.body;
     try {
@@ -24,37 +26,33 @@ const expRouter: RouterFactory = (context) => {
       res.json({
         experience,
       });
+      logger.info(`${req.id} Experience Post Successful`);
       return experience;
     } catch (err) {
-      logger.error(err);
+      logger.error(err.message);
       return err;
     }
   });
 
-  router.get("/", (req, res) => {
+  router.get("/", async (req, res) => {
+    const arr: Experience[] = await Experience.findAll();
     res.json({
-      id: "number",
-      userId: "number",
-      companyName: "string",
-      role: "string",
-      startDate: "Date",
-      endDate: "Date",
-      description: "string",
+      experiences: arr,
     });
   });
 
-  router.get("/:id", (req, res) => {
+  router.get("/:id", async (req, res) => {
+    const id = req.params.id;
+    const arr: Experience[] = await Experience.findAll({
+      where: { user_id: id },
+    });
+
     res.json({
-      id: "yikes",
-      userId: "number",
-      companyName: "string",
-      role: "string",
-      startDate: "Date",
-      endDate: "Date",
-      description: "string",
+      experiences: arr,
     });
   });
 
+  // TODO: Add Update Functionality
   router.put("/:id", (req, res) => {
     res.json({
       userId: "number",
@@ -66,8 +64,15 @@ const expRouter: RouterFactory = (context) => {
     });
   });
 
-  router.delete("/:id", (req, res) => {
-    logger.info("Good Job deleting");
+  router.delete("/:id", async (req, res) => {
+    const id = req.params.id;
+    try {
+      await Experience.destroy({ where: { id: id } });
+      res.send("Successfully Exterminated");
+    } catch (err) {
+      logger.error(err.message);
+      return err;
+    }
   });
 
   return router;
