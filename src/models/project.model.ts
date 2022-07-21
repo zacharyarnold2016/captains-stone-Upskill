@@ -43,10 +43,10 @@ export class Project
         description: {
           type: new DataTypes.STRING(256),
         },
+
       },
       {
         tableName: "projects",
-        underscored: true,
         sequelize,
       }
     );

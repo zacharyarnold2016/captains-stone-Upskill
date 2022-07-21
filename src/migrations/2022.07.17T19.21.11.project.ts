@@ -34,6 +34,8 @@ export const up: MigrationFn<Sequelize> = async ({ context }) => {
       type: new DataTypes.STRING(256),
       allowNull: false,
     },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
   });
 };
 export const down: MigrationFn<Sequelize> = async ({ context }) => {

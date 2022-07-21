@@ -2,7 +2,7 @@ import { DataTypes, Model, Optional, Sequelize } from "sequelize";
 import { Models } from "../interfaces/general";
 import { User } from "./user.model";
 
-interface ExperienceAttributes {
+export interface ExperienceAttributes {
   id: number;
   user_id: number;
   company_name: string;
@@ -13,7 +13,7 @@ interface ExperienceAttributes {
 }
 
 export class Experience
-  extends Model<ExperienceAttributes>
+  extends Model<ExperienceAttributes, Optional<ExperienceAttributes, "id">>
   implements ExperienceAttributes
 {
   id: number;
@@ -69,7 +69,6 @@ export class Experience
       },
       {
         tableName: "experiences",
-        underscored: true,
         sequelize,
       }
     );
