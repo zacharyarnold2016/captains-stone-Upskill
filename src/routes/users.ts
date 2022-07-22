@@ -23,6 +23,11 @@ const userRouter: RouterFactory = () => {
     res.send(req.body);
   });
 
+  router.get("/:userId/cv", (req, res) => {
+    logger.info(req.body);
+    res.send(req.body);
+  });
+
   // Updates User (I'm using put because it's in the doc, would use patch)
   router.put("/:id", (req, res) => {
     logger.info(req.body);
@@ -36,9 +41,5 @@ const userRouter: RouterFactory = () => {
   });
   return router;
 };
-
-// const empty = () => {
-//   logger.info("Is or isnt admin");
-// };
 
 export default userRouter;

@@ -20,7 +20,9 @@ const makeAuthRouter: RouterFactory = (context: Context) => {
     register,
     regHandle
   );
+  
   router.use("/login", reqLogger, login);
+
   return router;
 };
 
