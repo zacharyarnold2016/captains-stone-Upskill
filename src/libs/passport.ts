@@ -30,6 +30,7 @@ passport.use(
       const { title } = req.body;
       const { summary } = req.body;
       const { role } = req.body;
+      logger.error(req.file)
       const image = req.file.path;
       logger.info(req.id, email);
 

@@ -21,3 +21,6 @@ const handleLogin = (err: Error) => {
 };
 
 export default handleLogin;
+
+
+// request -> middlewares(next) -> controller -> Service

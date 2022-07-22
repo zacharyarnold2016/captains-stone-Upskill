@@ -1,14 +1,9 @@
 export class userService {
-    create(){
+  create() {}
 
-    }
-    read(){
+  read() {}
 
-    }
-    update(){
+  update() {}
 
-    }
-    delete(){
-        
-    }
+  delete() {}
 }

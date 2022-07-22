@@ -3,7 +3,6 @@ import passport from "passport";
 import bodyParser from "body-parser";
 import multer from "multer";
 
-import { ExtendedRequest } from "../interfaces/express";
 import logger from "../libs/logger";
 import { Context, RouterFactory } from "../interfaces/general";
 import "../libs/passport";
@@ -16,8 +15,7 @@ const upload = multer({ dest: "public/" });
 const makeAuthRouter: RouterFactory = (context: Context) => {
   const router = express.Router();
   // Define routes
-
-  router.post("/register", upload.single("image"), register, regHandle);
+  router.post("/register", reqLogger, upload.single("image"), register, regHandle);
   router.use("/login", reqLogger, login);
   return router;
 };

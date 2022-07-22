@@ -11,7 +11,7 @@ interface FeedbackAttributes {
 }
 
 export default class Feedback
-  extends Model<FeedbackAttributes>
+  extends Model<FeedbackAttributes, Optional<FeedbackAttributes, "id">>
   implements FeedbackAttributes
 {
   id: number;
@@ -62,8 +62,8 @@ export default class Feedback
   }
 
   static associate(models: Models, sequelize: Sequelize) {
-    Feedback.belongsTo(models.user, {
-      foreignKey: "user_id",
+    Feedback.belongsTo(User, {
+      foreignKey: "to_user",
     });
   }
 }

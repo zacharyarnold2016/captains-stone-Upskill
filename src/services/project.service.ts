@@ -1,14 +1,9 @@
 export class projectService {
-    create(){
+  create() {}
 
-    }
-    read(){
+  read() {}
 
-    }
-    update(){
+  update() {}
 
-    }
-    delete(){
-        
-    }
+  delete() {}
 }

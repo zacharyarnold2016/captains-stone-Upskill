@@ -1,7 +1,8 @@
 import { DataTypes, Model, Optional, Sequelize } from "sequelize";
 import { Models } from "../interfaces/general";
 import { Experience } from "./experience.model";
-import { Project } from "./project.model";
+import Feedback from "./feedback.model";
+import Project from "./project.model";
 
 export enum UserRole {
   Admin = "Admin",
@@ -114,9 +115,8 @@ export class User
   }
 
   static associate(models: Models, sequelize: Sequelize) {
-    // Example of how to define a association.
-    Project.belongsTo(models.user);
-    User.hasMany(models.project);
-    User.hasMany(Experience)
+    User.hasMany(Experience, { foreignKey: "user_id" });
+    User.hasMany(Feedback, { foreignKey: "to_user" });
+    User.hasMany(Project, { foreignKey: "user_id" });
   }
 }

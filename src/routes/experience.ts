@@ -1,12 +1,14 @@
 // TODO: REFACTOR TO SERVICE
 
 import express from "express";
+import Project from "../models/project.model";
 import { User } from "../models/user.model";
 import { ExtendedRequest } from "../interfaces/express";
 import { RouterFactory } from "../interfaces/general";
 import logger from "../libs/logger";
 import reqLogger from "../middleware/requestLog";
 import { Experience } from "../models/experience.model";
+import Feedback from "../models/feedback.model";
 
 const expRouter: RouterFactory = (context) => {
   const router = express.Router();
@@ -56,12 +58,12 @@ const expRouter: RouterFactory = (context) => {
 
   // TODO: Add Update Functionality
   router.put("/:id", reqLogger, async (req, res) => {
-    const user = await User.findAll({include: Experience}) 
+    const user = await User.findAll({ include: [Feedback, Experience, Project] });
     res.send(user);
   });
 
   router.delete("/:id", reqLogger, async (req: ExtendedRequest, res) => {
-    const {id} = req.params;
+    const { id } = req.params;
     try {
       await Experience.destroy({ where: { id } });
       return res.send("Successfully Exterminated");

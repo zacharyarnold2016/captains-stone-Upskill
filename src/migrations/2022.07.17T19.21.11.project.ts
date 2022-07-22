@@ -14,28 +14,17 @@ export const up: MigrationFn<Sequelize> = async ({ context }) => {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
     },
-    company_name: {
+    image: {
       type: new DataTypes.STRING(128),
-      allowNull: false,
-    },
-    role: {
-      type: new DataTypes.STRING(256),
-      allowNull: false,
-    },
-    start_date: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    end_date: {
-      type: DataTypes.DATE,
       allowNull: false,
     },
     description: {
       type: new DataTypes.STRING(256),
       allowNull: false,
     },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE,
+
+    created_at: DataTypes.DATE,
+    updated_at: DataTypes.DATE,
   });
 };
 export const down: MigrationFn<Sequelize> = async ({ context }) => {

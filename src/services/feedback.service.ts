@@ -1,14 +1,9 @@
 export class feedbackService {
-    create(){
+  create() {}
 
-    }
-    read(){
+  read() {}
 
-    }
-    update(){
+  update() {}
 
-    }
-    delete(){
-        
-    }
+  delete() {}
 }

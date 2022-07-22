@@ -1,33 +1,30 @@
-import express from "express";
+import express, { Response } from "express";
+import { ExtendedRequest } from "../interfaces/express";
+import Feedback from "../models/feedback.model";
 import { RouterFactory } from "../interfaces/general";
 import logger from "../libs/logger";
 
-const feedRouter: RouterFactory = () => {
+const feedRouter: RouterFactory = (context) => {
   const router = express.Router();
 
   // Create and experience
-  router.post("/", (req, res) => {
-    res.json({
-      userId: "number",
-      companyName: "string",
-      role: "string",
-      startDate: "Date",
-      endDate: "Date",
-      description: "string",
+  router.post("/", async (req: ExtendedRequest, res: Response) => {
+    const { from_user, to_user, content, company_name } = req.body;
+    try{
+    const feedback: Feedback = await Feedback.create({
+      from_user,
+      to_user,
+      content,
+      company_name,
     });
+    return res.send(feedback);
+  }catch(err){
+    logger.error(err);
+    return err
+  }
   });
 
-  router.get("/", (req, res) => {
-    res.json({
-      id: "number",
-      userId: "number",
-      companyName: "string",
-      role: "string",
-      startDate: "Date",
-      endDate: "Date",
-      description: "string",
-    });
-  });
+  router.get("/", (req, res) => {});
 
   router.get("/:id", (req, res) => {
     res.json({

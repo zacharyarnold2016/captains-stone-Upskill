@@ -1,5 +1,6 @@
 import { DataTypes, Model, Optional, Sequelize } from "sequelize";
 import { Models } from "../interfaces/general";
+import { User } from "./user.model";
 
 interface ProjectAttributes {
   id: number;
@@ -9,7 +10,7 @@ interface ProjectAttributes {
 }
 
 export default class Project
-  extends Model<ProjectAttributes>
+  extends Model<ProjectAttributes, Optional<ProjectAttributes, "id">>
   implements ProjectAttributes
 {
   id: number;
@@ -43,7 +44,6 @@ export default class Project
         description: {
           type: new DataTypes.STRING(256),
         },
-
       },
       {
         tableName: "projects",
@@ -54,7 +54,7 @@ export default class Project
   }
 
   static associate(models: Models, sequelize: Sequelize) {
-    Project.belongsTo(models.user, {
+    Project.belongsTo(User, {
       foreignKey: "user_id",
     });
   }
