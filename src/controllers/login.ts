@@ -4,6 +4,7 @@ import logger from "../libs/logger";
 
 let res: Response;
 let user: User;
+let jwt: any;
 
 const handleLogin = (err: Error) => {
   if (err) {
@@ -21,6 +22,5 @@ const handleLogin = (err: Error) => {
 };
 
 export default handleLogin;
-
 
 // request -> middlewares(next) -> controller -> Service

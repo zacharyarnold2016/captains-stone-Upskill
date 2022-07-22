@@ -8,8 +8,8 @@ import projectRouter from "../routes/projects";
 const loadRoutes = (app: express.Router, context: Context) => {
   app.use("/api/auth", makeAuthRouter(context));
   app.use("/api/experience", expRouter(context));
-  app.use("/api/feedback", feedRouter(context))
-  app.use("/api/projects", projectRouter(context))
+  app.use("/api/feedback", feedRouter(context));
+  app.use("/api/projects", projectRouter(context));
 };
 
 export default loadRoutes;

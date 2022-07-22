@@ -4,7 +4,7 @@ import { ExtendedRequest } from "../interfaces/express";
 import logger from "../libs/logger";
 
 const register = (req: ExtendedRequest, res: Response, next: NextFunction) => {
-  logger.warn(req.body)
+  logger.warn(req.body);
   passport.authenticate("register", (error, user, info) => {})(req, res);
   next();
 };

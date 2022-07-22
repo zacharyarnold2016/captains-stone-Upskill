@@ -24,13 +24,13 @@ passport.use(
       passwordField: "password",
       passReqToCallback: true,
     },
-    async (req: ExtendedRequest, email, password, done) => {
+    async (req: ExtendedRequest, email: string, password: string, done) => {
       const { firstName } = req.body;
       const { lastName } = req.body;
       const { title } = req.body;
       const { summary } = req.body;
       const { role } = req.body;
-      logger.error(req.file)
+      logger.error(req.file);
       const image = req.file.path;
       logger.info(req.id, email);
 
@@ -50,7 +50,7 @@ passport.use(
 
         return done(null, user);
       } catch (err: any) {
-        logger.error(req.id, "Error Occured During User Creation", err.msg);
+        logger.error(req.id, "Error Occured During User Creation", err.message);
         return done(err);
       }
     }

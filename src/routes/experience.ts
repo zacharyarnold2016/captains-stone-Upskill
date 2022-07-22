@@ -58,7 +58,9 @@ const expRouter: RouterFactory = (context) => {
 
   // TODO: Add Update Functionality
   router.put("/:id", reqLogger, async (req, res) => {
-    const user = await User.findAll({ include: [Feedback, Experience, Project] });
+    const user = await User.findAll({
+      include: [Feedback, Experience, Project],
+    });
     res.send(user);
   });
 

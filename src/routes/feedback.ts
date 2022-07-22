@@ -10,18 +10,18 @@ const feedRouter: RouterFactory = (context) => {
   // Create and experience
   router.post("/", async (req: ExtendedRequest, res: Response) => {
     const { from_user, to_user, content, company_name } = req.body;
-    try{
-    const feedback: Feedback = await Feedback.create({
-      from_user,
-      to_user,
-      content,
-      company_name,
-    });
-    return res.send(feedback);
-  }catch(err){
-    logger.error(err);
-    return err
-  }
+    try {
+      const feedback: Feedback = await Feedback.create({
+        from_user,
+        to_user,
+        content,
+        company_name,
+      });
+      return res.send(feedback);
+    } catch (err) {
+      logger.error(err);
+      return err;
+    }
   });
 
   router.get("/", (req, res) => {});

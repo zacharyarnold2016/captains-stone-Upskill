@@ -1,1 +1,1 @@
-export class AuthService {}
+export default class AuthService {}
