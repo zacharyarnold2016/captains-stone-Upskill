@@ -1,4 +1,4 @@
-import { NextFunction, Response } from "express";
+import { Response } from "express";
 import bcrypt from "bcrypt";
 import { User } from "../models/user.model";
 import { ExtendedRequest } from "../interfaces/express";

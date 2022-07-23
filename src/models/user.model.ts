@@ -129,8 +129,8 @@ export class User
     User.hasMany(Project, { foreignKey: "user_id" });
   }
 
-  static validate(user: User): Boolean {
-    if (user.role !== UserRole.Admin) {
+  static async validate(role: UserRole): Promise<Boolean> {
+    if (role !== UserRole.Admin) {
       throw new Error("Only Admin can access this route");
     }
     return true;

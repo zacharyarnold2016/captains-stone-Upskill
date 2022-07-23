@@ -11,13 +11,19 @@ export interface Context {
   };
 }
 
-export type RouterFactory = (context: Context) => express.Router;
+export type RouterFactory = (context: Context) => express.Router;// eslint-ignore-line
 
-export type Loader = (app: express.Application, context: Context) => void;
+export type Loader = (app: express.Application, context: Context) => void;// eslint-ignore-line
 
 export interface Models {
   user: typeof User;
   project: typeof Project;
   feedback: typeof Feedback;
   experience: typeof Experience;
+}
+
+export interface passportUser {
+  id: number;
+  email: string;
+  image: string;
 }

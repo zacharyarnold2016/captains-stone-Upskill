@@ -5,16 +5,7 @@ import bcrypt from "bcrypt";
 
 import { User } from "../models/user.model";
 import logger from "./logger";
-import { ExtendedRequest } from "../interfaces/express";
-
-const SALT: number = 4;
-
-// Temp Fix
-interface passportUser {
-  id: number;
-  email: string;
-  image: string;
-}
+import { passportUser } from "../interfaces/general";
 
 passport.use(
   "login",
@@ -25,7 +16,7 @@ passport.use(
     },
     async (email, password, done) => {
       try {
-        const user = await User.findOne({ where: { email } });
+        const user: User = await User.findOne({ where: { email } });
         logger.info(`user: ${email} found`);
         // @ts-ignore | Weird thing to come back to and correct
         const values = user.dataValues;

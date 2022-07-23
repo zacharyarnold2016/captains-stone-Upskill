@@ -1,26 +1,33 @@
-import { Response } from "express";
-import { User } from "../models/user.model";
-import logger from "../libs/logger";
+import passport from "passport";
+import jwt from "jsonwebtoken";
+import { NextFunction, Response } from "express";
+import { ExtendedRequest } from "../interfaces/express";
 
-let res: Response;
-let user: User;
-let jwt: any;
+const login = async (
+  req: ExtendedRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  passport.authenticate("login", async (err, user, info) => {
+    if (err || !user) {
+      return res.status(400).send(next(err));
+    }
+    const result: void = req.logIn(
+      user,
+      { session: false },
+      async (error: Error) => {
+        if (error) {
+          return res.status(400).send(next(error));
+        }
+        const { id, firstName, lastName, title, summary, email, image } = user;
+        const body = { id, firstName, lastName, title, summary, email, image };
+        const token = jwt.sign({ user: body }, "TOP_SECRET");
 
-const handleLogin = (err: Error) => {
-  if (err) {
-    logger.error(err);
-    return res.status(400).send({
-      message: err.message,
-    });
-  }
-
-  const body = { id: user.id, email: user.email };
-  const token = jwt.sign({ user: body }, "Secret");
-  logger.info(token);
-
-  return res.json(user);
+        return res.status(200).json({ user: body, token });
+      }
+    );
+    // ON SUCCESS
+  })(req, res, next);
 };
 
-export default handleLogin;
-
-// request -> middlewares(next) -> controller -> Service
+export default login;

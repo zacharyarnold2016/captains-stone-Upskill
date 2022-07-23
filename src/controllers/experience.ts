@@ -57,7 +57,7 @@ const updateExperience = async (req: ExtendedRequest, res: Response) => {
     res.send(newUser);
   } catch (err) {
     logger.error(err.message);
-    res.status(500).send("An Internal Error Occured");
+    res.status(505).send("An Internal Error Occured");
   }
 };
 
