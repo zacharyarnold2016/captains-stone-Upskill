@@ -88,6 +88,14 @@ export class User
         role: {
           type: new DataTypes.STRING(50),
           allowNull: false,
+          validate: {
+            roleConfirm() {
+              if (this.role !== UserRole.Admin && this.role !== UserRole.User) {
+                throw new Error("Role must be Admin or User");
+              }
+              return true;
+            },
+          },
         },
         email: {
           type: DataTypes.STRING,
@@ -114,9 +122,17 @@ export class User
     );
   }
 
+  // @ts-ignore
   static associate(models: Models, sequelize: Sequelize) {
     User.hasMany(Experience, { foreignKey: "user_id" });
     User.hasMany(Feedback, { foreignKey: "to_user" });
     User.hasMany(Project, { foreignKey: "user_id" });
+  }
+
+  static validate(user: User): Boolean {
+    if (user.role !== UserRole.Admin) {
+      throw new Error("Only Admin can access this route");
+    }
+    return true;
   }
 }

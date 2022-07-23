@@ -17,47 +17,6 @@ interface passportUser {
 }
 
 passport.use(
-  "register",
-  new Strategy(
-    {
-      usernameField: "email",
-      passwordField: "password",
-      passReqToCallback: true,
-    },
-    async (req: ExtendedRequest, email: string, password: string, done) => {
-      const { firstName } = req.body;
-      const { lastName } = req.body;
-      const { title } = req.body;
-      const { summary } = req.body;
-      const { role } = req.body;
-      logger.error(req.file);
-      const image = req.file.path;
-      logger.info(req.id, email);
-
-      // User SQL Creation
-      try {
-        const hash: string = await bcrypt.hash(password, SALT);
-        const user: User = await User.create({
-          firstName,
-          lastName,
-          title,
-          summary,
-          role,
-          email,
-          password: hash,
-          image,
-        });
-
-        return done(null, user);
-      } catch (err: any) {
-        logger.error(req.id, "Error Occured During User Creation", err.message);
-        return done(err);
-      }
-    }
-  )
-);
-
-passport.use(
   "login",
   new Strategy(
     {

@@ -1,22 +1,45 @@
 import { NextFunction, Response } from "express";
-import passport from "passport";
+import bcrypt from "bcrypt";
+import { User } from "../models/user.model";
 import { ExtendedRequest } from "../interfaces/express";
-import logger from "../libs/logger";
 
-const register = (req: ExtendedRequest, res: Response, next: NextFunction) => {
-  logger.warn(req.body);
-  passport.authenticate("register", (error: Error, user, info) => {})(req, res);
-  next();
+const SALT = 5;
+
+const register = async (req: ExtendedRequest, res: Response) => {
+  const { firstName, lastName, title, summary, role, email, password } =
+    req.body;
+  const image = req.file.path;
+  try {
+    const hash: string = await bcrypt.hash(password, SALT);
+    try {
+      const user = await User.create({
+        firstName,
+        lastName,
+        image,
+        title,
+        summary,
+        role,
+        email,
+        password: hash,
+      });
+
+      const returnedUser = {
+        id: user.id,
+        firstName,
+        lastName,
+        title,
+        summary,
+        email,
+        image,
+      };
+
+      res.status(200).send(returnedUser);
+    } catch (err) {
+      res.status(400).send(err.message);
+    }
+  } catch (err) {
+    res.status(505).send(err.message);
+  }
 };
 
-const regHandle = (req: ExtendedRequest, res: Response) => {
-  const { body } = req;
-  const fullname: string = `${body.firstName} ${body.lastName}`;
-  const user = { role: body.role, email: body.email, name: fullname };
-  res.json({
-    user,
-    msg: "Successfully Registered User",
-  });
-};
-
-export { register, regHandle };
+export default register;
