@@ -34,23 +34,23 @@ const getAllProjects = async (req: ExtendedRequest, res: Response) => {
 
 const getOneProject = async (req: ExtendedRequest, res: Response) => {
   const { id } = req.params;
-  const arr: Project[] = await Project.findAll({ where: { user_id: id } });
+  const project: Project = await Project.findOne({ where: { user_id: id } });
   res.json({
-    projects: arr,
+    project,
   });
 };
 
 const updateOneProject = async (req: ExtendedRequest, res: Response) => {
   const { id } = req.params;
   const update = req.body;
-  const user = await Project.findOne({ where: { id } });
-  if (!user) {
+  const project = await Project.findOne({ where: { id } });
+  if (!project) {
     logger.error("No User found");
     res.status(404).send("An Error Occured");
   }
   try {
-    const newUser = await Project.update(update, { where: { id } });
-    res.send(newUser);
+    const newProject = await Project.update(update, { where: { id } });
+    res.send(newProject);
   } catch (err) {
     logger.error(err.message);
     res.status(500).send("An Internal Error Occured");
@@ -61,7 +61,7 @@ const deleteProject = async (req: ExtendedRequest, res: Response) => {
   const { id } = req.params;
   try {
     await Project.destroy({ where: { id } });
-    res.send("Successfully Exterminated");
+    return res.send("Successfully Exterminated");
   } catch (err) {
     logger.error(err.message);
     return err;

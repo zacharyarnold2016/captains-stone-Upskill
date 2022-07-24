@@ -2,7 +2,7 @@ import express from "express";
 import multer from "multer";
 
 import reqLogger from "../middleware/requestLog";
-import { RouterFactory } from "../interfaces/general";
+import { Context, RouterFactory } from "../interfaces/general";
 import adminVerify from "../middleware/roles";
 import {
   createProject,
@@ -14,7 +14,7 @@ import {
 
 const upload = multer({ dest: "public/projects" });
 
-const projectRouter: RouterFactory = (context) => {
+const projectRouter: RouterFactory = (context: Context) => {
   // eslint-disable-line no-unused-vars
   const router = express.Router();
 

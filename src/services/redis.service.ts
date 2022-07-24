@@ -1,5 +1,4 @@
 import { createClient } from "redis";
-import logger from "../libs/logger";
 
 class RedisService {
   static client = createClient();

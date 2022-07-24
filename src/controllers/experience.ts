@@ -59,14 +59,14 @@ const updateExperience = async (
 ): Promise<void> => {
   const { id } = req.params;
   const update = req.body;
-  const user = await Experience.findOne({ where: { id } });
-  if (!user) {
-    logger.error("No User found");
+  const experience: Experience = await Experience.findOne({ where: { id } });
+  if (!experience) {
+    logger.error("No Experience found");
     res.status(404).send("An Error Occured");
   }
   try {
-    const newUser = await Experience.update(update, { where: { id } });
-    res.send(newUser);
+    const newExperience = await Experience.update(update, { where: { id } });
+    res.send(newExperience);
   } catch (err) {
     logger.error(err.message);
     res.status(505).send("An Internal Error Occured");

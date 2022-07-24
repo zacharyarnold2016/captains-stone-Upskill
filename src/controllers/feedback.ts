@@ -28,26 +28,26 @@ const getAllFeedback = async (req: ExtendedRequest, res: Response) => {
 
 const getOneFeedback = async (req: ExtendedRequest, res: Response) => {
   const { id } = req.params;
-  const arr: Feedback[] = await Feedback.findAll({
+  const feedback: Feedback = await Feedback.findOne({
     where: { to_user: id },
   });
 
   res.json({
-    feedback: arr,
+    feedback,
   });
 };
 
 const updateFeedback = async (req: ExtendedRequest, res: Response) => {
   const { id } = req.params;
   const update = req.body;
-  const user = await Feedback.findOne({ where: { id } });
-  if (!user) {
-    logger.error("No User found");
+  const feedback = await Feedback.findOne({ where: { id } });
+  if (!feedback) {
+    logger.error("No Feedback found");
     res.status(404).send("An Error Occured");
   }
   try {
-    const newUser = await Feedback.update(update, { where: { id } });
-    res.send(newUser);
+    const newFeedback = await Feedback.update(update, { where: { id } });
+    res.send(newFeedback);
   } catch (err) {
     logger.error(err.message);
     res.status(500).send("An Internal Error Occured");

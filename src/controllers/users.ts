@@ -16,6 +16,7 @@ const getAllUsers = async (req: ExtendedRequest, res: Response) => {
     const response = getPagingData(data, page, limit);
     res.send(response);
   } else {
+    // @ts-ignore
     const condition = { [query]: target };
     const data = await User.findAndCountAll({
       // @ts-ignore

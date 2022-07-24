@@ -1,5 +1,5 @@
 import express from "express";
-import { RouterFactory } from "../interfaces/general";
+import { Context, RouterFactory } from "../interfaces/general";
 import reqLogger from "../middleware/requestLog";
 import {
   addFeedback,
@@ -9,7 +9,7 @@ import {
   deleteFeedback,
 } from "../controllers/feedback";
 
-const feedRouter: RouterFactory = (context) => {
+const feedRouter: RouterFactory = (context: Context) => {
   const router = express.Router();
 
   // Create and experience

@@ -8,8 +8,7 @@ const login = async (
   res: Response,
   next: NextFunction
 ) => {
-  passport.authenticate("login", async (err, user, info) => {
-    // eslint-disable-line
+  passport.authenticate("login", async (err, user) => {
     if (err || !user) {
       if (!user) {
         return res.status(404).send(next(err));
@@ -26,7 +25,7 @@ const login = async (
 
       return res.status(200).json({ user: body, token });
     });
-    // ON SUCCESS
+    return 0;
   })(req, res, next);
 };
 

@@ -2,7 +2,7 @@ import express from "express";
 import multer from "multer";
 
 import roles from "../middleware/roles";
-import { RouterFactory } from "../interfaces/general";
+import { Context, RouterFactory } from "../interfaces/general";
 import register from "../controllers/register";
 import reqLogger from "../middleware/requestLog";
 import {
@@ -15,7 +15,7 @@ import {
 
 const upload = multer({ dest: "public/users" });
 
-const userRouter: RouterFactory = (context) => {
+const userRouter: RouterFactory = (context: Context) => {
   const router = express.Router();
 
   // Create User

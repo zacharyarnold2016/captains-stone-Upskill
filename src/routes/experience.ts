@@ -1,7 +1,7 @@
 import express from "express";
 
 import adminVerify from "../middleware/roles";
-import { RouterFactory } from "../interfaces/general";
+import { Context, RouterFactory } from "../interfaces/general";
 import reqLogger from "../middleware/requestLog";
 import {
   addExperience,
@@ -11,7 +11,7 @@ import {
   deleteExperience,
 } from "../controllers/experience";
 
-const expRouter: RouterFactory = (context) => {
+const expRouter: RouterFactory = (contex: Context) => {
   // eslint-disable-line no-unused-vars
   const router = express.Router();
 
