@@ -3,7 +3,10 @@ import { Experience } from "../models/experience.model";
 import logger from "../libs/logger";
 import { ExtendedRequest } from "../interfaces/express";
 
-const addExperience = async (req: ExtendedRequest, res: Response) => {
+const addExperience = async (
+  req: ExtendedRequest,
+  res: Response
+): Promise<void> => {
   // eslint-disable-next-line
   const { user_id, company_name, role, startDate, endDate, description } =
     req.body;
@@ -26,14 +29,20 @@ const addExperience = async (req: ExtendedRequest, res: Response) => {
   }
 };
 
-const getAllExperience = async (req: ExtendedRequest, res: Response) => {
+const getAllExperience = async (
+  req: ExtendedRequest,
+  res: Response
+): Promise<void> => {
   const arr: Experience[] = await Experience.findAll();
   res.json({
     experiences: arr,
   });
 };
 
-const getOneExperience = async (req: ExtendedRequest, res: Response) => {
+const getOneExperience = async (
+  req: ExtendedRequest,
+  res: Response
+): Promise<void> => {
   const { id } = req.params;
   const arr: Experience[] = await Experience.findAll({
     where: { user_id: id },
@@ -44,7 +53,10 @@ const getOneExperience = async (req: ExtendedRequest, res: Response) => {
   });
 };
 
-const updateExperience = async (req: ExtendedRequest, res: Response) => {
+const updateExperience = async (
+  req: ExtendedRequest,
+  res: Response
+): Promise<void> => {
   const { id } = req.params;
   const update = req.body;
   const user = await Experience.findOne({ where: { id } });

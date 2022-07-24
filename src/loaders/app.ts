@@ -6,6 +6,7 @@ import loadModels from "./models";
 import loadSequelize from "./sequelize";
 import { config } from "../config";
 import loadPassport from "./passport";
+import loadRedis from "./loadRedis";
 
 const loadApp = async () => {
   const app = express();
@@ -18,6 +19,7 @@ const loadApp = async () => {
   loadPassport(app, context);
   loadMiddlewares(app, context);
   loadRoutes(app, context);
+  loadRedis();
 
   return app;
 };

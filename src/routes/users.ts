@@ -1,7 +1,7 @@
 import express from "express";
 import multer from "multer";
 
-import adminVerify from "../middleware/verify";
+import roles from "../middleware/roles";
 import { RouterFactory } from "../interfaces/general";
 import register from "../controllers/register";
 import reqLogger from "../middleware/requestLog";
@@ -19,20 +19,20 @@ const userRouter: RouterFactory = (context) => {
   const router = express.Router();
 
   // Create User
-  router.post("/", reqLogger, adminVerify, upload.single("image"), register);
+  router.post("/", reqLogger, roles, upload.single("image"), register);
 
   // Get paginated groups of users
-  router.get("/", adminVerify, getAllUsers);
+  router.get("/", reqLogger, roles, getAllUsers);
 
   // Get individiual User Via ID
-  router.get("/:id", adminVerify, getOneUser);
+  router.get("/:id", roles, getOneUser);
 
   router.get("/:userId/cv", cv);
 
   router.put("/:id", updateUser);
 
   // Admin Locked Delete Method
-  router.delete("/:id", adminVerify, deleteUser);
+  router.delete("/:id", roles, deleteUser);
   return router;
 };
 

@@ -4,7 +4,7 @@ import logger from "../libs/logger";
 import { ExtendedRequest } from "../interfaces/express";
 import { User } from "../models/user.model";
 
-const adminVerify = async (
+const roles = async (
   req: ExtendedRequest,
   res: Response,
   next: NextFunction
@@ -24,4 +24,4 @@ const adminVerify = async (
   }
 };
 
-export default adminVerify;
+export default roles;

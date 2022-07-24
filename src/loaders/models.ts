@@ -4,8 +4,9 @@ import Feedback from "../models/feedback.model";
 import Project from "../models/project.model";
 import { Models } from "../interfaces/general";
 import { User } from "../models/user.model";
+import { initializeAdmin } from "../migrations/2021.09.30T19.59.32.users-schema";
 
-const loadModels = (sequelize: Sequelize): Models => {
+const loadModels = async (sequelize: Sequelize): Promise<Models> => {
   const models: Models = {
     user: User,
     project: Project,
@@ -20,6 +21,8 @@ const loadModels = (sequelize: Sequelize): Models => {
   for (const model of Object.values(models)) {
     model.associate(models, sequelize);
   }
+
+  await initializeAdmin();
 
   return models;
 };

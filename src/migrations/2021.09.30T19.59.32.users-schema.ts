@@ -1,5 +1,9 @@
 import { MigrationFn } from "umzug";
+import bcrypt from "bcrypt";
 import { DataTypes, Sequelize } from "sequelize";
+import { User, UserRole } from "../models/user.model";
+
+const SALT = 10;
 
 export const up: MigrationFn<Sequelize> = async ({ context }) => {
   const q = context.getQueryInterface();
@@ -67,4 +71,21 @@ export const down: MigrationFn<Sequelize> = async ({ context }) => {
   const q = context.getQueryInterface();
 
   await q.dropTable("users");
+};
+
+export const initializeAdmin: any = async () => {
+  const user = await User.findOne({ where: { id: 1 } });
+  const password = await bcrypt.hash("admin", SALT);
+  if (!user)
+    await User.create({
+      id: 1,
+      firstName: "admin",
+      lastName: "super",
+      image: "NoImage",
+      title: "Admin",
+      summary: "NoSummary",
+      role: UserRole.Admin,
+      email: "admin@admin.com",
+      password,
+    });
 };

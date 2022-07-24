@@ -3,7 +3,7 @@ import multer from "multer";
 
 import reqLogger from "../middleware/requestLog";
 import { RouterFactory } from "../interfaces/general";
-import adminVerify from "../middleware/verify";
+import adminVerify from "../middleware/roles";
 import {
   createProject,
   getAllProjects,
@@ -14,7 +14,8 @@ import {
 
 const upload = multer({ dest: "public/projects" });
 
-const projectRouter: RouterFactory = (context) => { // eslint-disable-line no-unused-vars
+const projectRouter: RouterFactory = (context) => {
+  // eslint-disable-line no-unused-vars
   const router = express.Router();
 
   router.post("/", reqLogger, upload.single("image"), createProject);

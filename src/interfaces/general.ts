@@ -4,16 +4,18 @@ import { User } from "../models/user.model";
 import Project from "../models/project.model";
 import Feedback from "../models/feedback.model";
 import { Experience } from "../models/experience.model";
+import RedisService from "../services/redis.service";
 
 export interface Context {
   services: {
     authService: AuthService;
+    redisService: RedisService;
   };
 }
 
-export type RouterFactory = (context: Context) => express.Router;// eslint-ignore-line
+export type RouterFactory = (context: Context) => express.Router; // eslint-ignore-line
 
-export type Loader = (app: express.Application, context: Context) => void;// eslint-ignore-line
+export type Loader = (app: express.Application, context: Context) => void; // eslint-ignore-line
 
 export interface Models {
   user: typeof User;

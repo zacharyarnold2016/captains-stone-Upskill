@@ -1,16 +1,29 @@
 import { Response } from "express";
+import userCleanUp from "../services/user.service";
 import { User } from "../models/user.model";
 import logger from "../libs/logger";
 import { ExtendedRequest } from "../interfaces/express";
 import { Experience } from "../models/experience.model";
 import Feedback from "../models/feedback.model";
 import Project from "../models/project.model";
+import { getPagination, getPagingData } from "../services/page.service";
 
 const getAllUsers = async (req: ExtendedRequest, res: Response) => {
-  const arr: User[] = await User.findAll();
-  res.json({
-    users: arr,
-  });
+  const { page, size, query, target } = req.query;
+  const { limit, offset } = getPagination(page, size);
+  if (!query) {
+    const data = await User.findAndCountAll({ limit, offset });
+    const response = getPagingData(data, page, limit);
+    res.send(response);
+  } else {
+    const condition = { [query]: target };
+    const data = await User.findAndCountAll({
+      // @ts-ignore
+      where: condition,
+    });
+    const response = getPagingData(data, page, limit);
+    res.send(response);
+  }
 };
 
 const getOneUser = async (req: ExtendedRequest, res: Response) => {
@@ -37,11 +50,12 @@ const updateUser = async (req: ExtendedRequest, res: Response) => {
 
 const cv = async (req: ExtendedRequest, res: Response) => {
   const { userId } = req.params;
-  const cover = await User.findAll({
+  const cover = await User.findOne({
     where: { id: userId },
     include: [Experience, Project, Feedback],
   });
-  res.json({ cover });
+  const user = userCleanUp(cover);
+  res.json({ user });
 };
 
 const deleteUser = async (req: ExtendedRequest, res: Response) => {
