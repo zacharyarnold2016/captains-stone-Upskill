@@ -2,6 +2,7 @@ import { Response } from "express";
 import { Experience } from "../models/experience.model";
 import logger from "../libs/logger";
 import { ExtendedRequest } from "../interfaces/express";
+import RedisService from "../services/redis.service";
 
 const addExperience = async (
   req: ExtendedRequest,
@@ -24,6 +25,7 @@ const addExperience = async (
       experience,
     });
     logger.info(`${req.id} Experience Post Successful`);
+    await RedisService.clearCache(`cv${user_id}`);
   } catch (err) {
     logger.error(err.message);
   }
@@ -67,6 +69,8 @@ const updateExperience = async (
   }
   try {
     const newExperience = await Experience.update(update, { where: { id } });
+    const { user_id } = experience;
+    await RedisService.clearCache(`cv${user_id}`);
     res.send(newExperience);
   } catch (err) {
     logger.error(err.message);
@@ -77,7 +81,12 @@ const updateExperience = async (
 const deleteExperience = async (req: ExtendedRequest, res: Response) => {
   const { id } = req.params;
   try {
-    await Experience.destroy({ where: { id } });
+    const result = await Experience.findOne({ where: { id } });
+    if (result) {
+      const { user_id } = result;
+      await Experience.destroy({ where: { id } });
+      await RedisService.clearCache(`cv${user_id}`);
+    }
     return res.send("Successfully Exterminated");
   } catch (err) {
     logger.error(err.message);

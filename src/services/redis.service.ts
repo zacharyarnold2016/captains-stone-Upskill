@@ -18,6 +18,10 @@ class RedisService {
     return value;
   }
 
+  static async clearCache(key) {
+    const a = await RedisService.client.del(key);
+  }
+
   // static async update() {}
 }
 

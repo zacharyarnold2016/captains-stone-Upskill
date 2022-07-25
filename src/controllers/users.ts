@@ -7,13 +7,15 @@ import { Experience } from "../models/experience.model";
 import Feedback from "../models/feedback.model";
 import Project from "../models/project.model";
 import { getPagination, getPagingData } from "../services/page.service";
+import RedisService from "../services/redis.service";
 
 const getAllUsers = async (req: ExtendedRequest, res: Response) => {
   const { page, size, query, target } = req.query;
-  const { limit, offset } = getPagination(page, size);
+  const pageInt = parseInt(page, 10);
+  const { limit, offset } = getPagination(pageInt, size);
   if (!query) {
     const data = await User.findAndCountAll({ limit, offset });
-    const response = getPagingData(data, page, limit);
+    const response = getPagingData(data, pageInt, limit);
     res.send(response);
   } else {
     // @ts-ignore
@@ -22,7 +24,7 @@ const getAllUsers = async (req: ExtendedRequest, res: Response) => {
       // @ts-ignore
       where: condition,
     });
-    const response = getPagingData(data, page, limit);
+    const response = getPagingData(data, pageInt, limit);
     res.send(response);
   }
 };
@@ -51,12 +53,18 @@ const updateUser = async (req: ExtendedRequest, res: Response) => {
 
 const cv = async (req: ExtendedRequest, res: Response) => {
   const { userId } = req.params;
-  const cover = await User.findOne({
-    where: { id: userId },
-    include: [Experience, Project, Feedback],
-  });
-  const user = userCleanUp(cover);
-  res.json({ user });
+  const result = await RedisService.getCache(`cv${userId}`);
+  if (result === null) {
+    const cover = await User.findOne({
+      where: { id: userId },
+      include: [Experience, Project, Feedback],
+    });
+    const user = userCleanUp(cover);
+    await RedisService.setCache(`cv${userId}`, user);
+    res.json({ user });
+  } else {
+    res.json({ user: result });
+  }
 };
 
 const deleteUser = async (req: ExtendedRequest, res: Response) => {
