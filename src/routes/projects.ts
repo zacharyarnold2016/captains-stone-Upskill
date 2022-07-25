@@ -3,7 +3,6 @@ import multer from "multer";
 
 import reqLogger from "../middleware/requestLog";
 import { Context, RouterFactory } from "../interfaces/general";
-import adminVerify from "../middleware/roles";
 import {
   createProject,
   getAllProjects,
@@ -11,6 +10,8 @@ import {
   updateOneProject,
   deleteProject,
 } from "../controllers/projects";
+import { projectValidate, pathIdValidate } from "../middleware/validation";
+import roles from "../middleware/roles";
 
 const upload = multer({ dest: "public/projects" });
 
@@ -18,16 +19,22 @@ const projectRouter: RouterFactory = (context: Context) => {
   // eslint-disable-line no-unused-vars
   const router = express.Router();
 
-  router.post("/", reqLogger, upload.single("image"), createProject);
+  router.post(
+    "/",
+    upload.single("image"),
+    reqLogger,
+    projectValidate,
+    createProject
+  );
 
   // Admin Only
-  router.get("/", reqLogger, adminVerify, getAllProjects);
+  router.get("/", reqLogger, roles, getAllProjects);
 
-  router.get("/:id", reqLogger, getOneProject);
+  router.get("/:id", reqLogger, pathIdValidate, getOneProject);
 
-  router.put("/:id", reqLogger, updateOneProject);
+  router.put("/:id", reqLogger, pathIdValidate, updateOneProject);
 
-  router.delete(":id", reqLogger, deleteProject);
+  router.delete(":id", reqLogger, pathIdValidate, deleteProject);
 
   return router;
 };

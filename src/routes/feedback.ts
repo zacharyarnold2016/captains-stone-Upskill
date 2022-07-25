@@ -8,20 +8,21 @@ import {
   updateFeedback,
   deleteFeedback,
 } from "../controllers/feedback";
+import { feedbackValidate, pathIdValidate } from "../middleware/validation";
 
 const feedRouter: RouterFactory = (context: Context) => {
   const router = express.Router();
 
   // Create and experience
-  router.post("/", reqLogger, addFeedback);
+  router.post("/", reqLogger, feedbackValidate, addFeedback);
 
   router.get("/", reqLogger, getAllFeedback);
 
-  router.get("/:id", reqLogger, getOneFeedback);
+  router.get("/:id", reqLogger, pathIdValidate, getOneFeedback);
 
-  router.put("/:id", reqLogger, updateFeedback);
+  router.put("/:id", reqLogger, pathIdValidate, updateFeedback);
 
-  router.delete(":id", reqLogger, deleteFeedback);
+  router.delete(":id", reqLogger, pathIdValidate, deleteFeedback);
 
   return router;
 };
