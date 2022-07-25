@@ -18,7 +18,7 @@ const expRouter: RouterFactory = (contex: Context) => {
   router.post("/", reqLogger, addExperience);
 
   // Admin Only
-  router.get("/", adminVerify, reqLogger, getAllExperience);
+  router.get("/", reqLogger, adminVerify, getAllExperience);
 
   router.get("/:id", reqLogger, getOneExperience);
 

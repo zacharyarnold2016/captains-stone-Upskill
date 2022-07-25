@@ -12,6 +12,7 @@ import {
   cv,
   deleteUser,
 } from "../controllers/users";
+import { userVer } from "../middleware/verifyUser";
 
 const upload = multer({ dest: "public/users" });
 
@@ -29,7 +30,7 @@ const userRouter: RouterFactory = (context: Context) => {
 
   router.get("/:userId/cv", cv);
 
-  router.put("/:id", updateUser);
+  router.put("/:id", userVer, updateUser);
 
   // Admin Locked Delete Method
   router.delete("/:id", roles, deleteUser);

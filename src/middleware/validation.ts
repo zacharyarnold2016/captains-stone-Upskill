@@ -28,7 +28,10 @@ const userValidate = [
     .isLength({ min: 4 })
     .escape()
     .custom((value) => {
-      if (value !== UserRole.Admin || UserRole.User) {
+      console.log(value);
+      console.log(value === UserRole.USER);
+      if (value !== UserRole.ADMIN && value !== UserRole.USER) {
+        console.log("In here for some reason?");
         return false;
       }
       return true;

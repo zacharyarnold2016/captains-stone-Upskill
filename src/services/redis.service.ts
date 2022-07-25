@@ -7,14 +7,18 @@ class RedisService {
     await RedisService.client.connect();
   }
 
-  static async setCache() {
-    await RedisService.client.set("key", "value");
+  static async setCache(key, value) {
+    const val = JSON.stringify(value)
+    const a = await RedisService.client.set(key, val);
   }
 
-  static async cache() {
-    const a = await RedisService.client.get("key");
-    return a;
+  static async getCache(key) {
+    const a = await RedisService.client.get(key);
+    const value = JSON.parse(a);
+    return value;
   }
+
+  // static async update() {}
 }
 
 export default RedisService;

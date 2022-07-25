@@ -5,8 +5,8 @@ import Feedback from "./feedback.model";
 import Project from "./project.model";
 
 export enum UserRole {
-  Admin = "Admin",
-  User = "User",
+  ADMIN = "ADMIN",
+  USER = "USER",
 }
 
 interface UserAttributes {
@@ -90,7 +90,7 @@ export class User
           allowNull: false,
           validate: {
             roleConfirm() {
-              if (this.role !== UserRole.Admin && this.role !== UserRole.User) {
+              if (this.role !== UserRole.ADMIN && this.role !== UserRole.USER) {
                 throw new Error("Role must be Admin or User");
               }
               return true;
@@ -130,7 +130,7 @@ export class User
   }
 
   static async validate(role: UserRole): Promise<Boolean> {
-    if (role !== UserRole.Admin) {
+    if (role !== UserRole.ADMIN) {
       throw new Error("Only Admin can access this route");
     }
     return true;

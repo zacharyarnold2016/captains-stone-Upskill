@@ -19,8 +19,8 @@ const login = async (
       if (error) {
         return res.status(505).send(next(error));
       }
-      const { id, firstName, lastName, title, summary, email, image } = user;
-      const body = { id, firstName, lastName, title, summary, email, image };
+      const { id, firstName, lastName, title, summary, email, image, role } = user;
+      const body = { id, firstName, lastName, title, role, summary, email, image };
       const token = jwt.sign({ user: body }, "TOP_SECRET");
 
       return res.status(200).json({ user: body, token });

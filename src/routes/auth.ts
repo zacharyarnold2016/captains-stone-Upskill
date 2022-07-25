@@ -7,7 +7,6 @@ import "../libs/passport";
 import login from "../controllers/login";
 import reqLogger from "../middleware/requestLog";
 import register from "../controllers/register";
-import RedisService from "../services/redis.service";
 
 const upload = multer({ dest: "public/users" });
 
@@ -25,11 +24,6 @@ const makeAuthRouter: RouterFactory = (context: Context) => {
   );
 
   router.post("/login", reqLogger, login);
-
-  router.post("/test", reqLogger, async (req, res) => {
-    const a = await RedisService.cache();
-    res.send(a);
-  });
 
   return router;
 };
