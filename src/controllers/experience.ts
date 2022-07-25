@@ -11,6 +11,7 @@ const addExperience = async (
   // eslint-disable-next-line
   const { user_id, company_name, role, startDate, endDate, description } =
     req.body;
+
   try {
     const experience: Experience = await Experience.create({
       user_id,
@@ -24,7 +25,7 @@ const addExperience = async (
     res.json({
       experience,
     });
-    logger.info(`${req.id} Experience Post Successful`);
+    logger.info(`${user_id} Experience Post Successful`);
     await RedisService.clearCache(`cv${user_id}`);
   } catch (err) {
     logger.error(err.message);
@@ -47,7 +48,7 @@ const getOneExperience = async (
 ): Promise<void> => {
   const { id } = req.params;
 
-  const arr: Experience[] = await Experience.findAll({
+  const arr: Experience = await Experience.findOne({
     where: { id },
   });
 
@@ -68,7 +69,10 @@ const updateExperience = async (
     res.status(404).send("An Error Occured");
   }
   try {
-    const newExperience = await Experience.update(update, { where: { id } });
+    const newExperience: [number, Experience[]] = await Experience.update(
+      update,
+      { where: { id } }
+    );
     const { user_id } = experience;
     await RedisService.clearCache(`cv${user_id}`);
     res.send(newExperience);

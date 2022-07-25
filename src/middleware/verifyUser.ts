@@ -6,7 +6,7 @@ import Project from "../models/project.model";
 import Feedback from "../models/feedback.model";
 import { ExtendedRequest } from "../interfaces/express";
 
-const xpVer = (req, res, next) => {
+const xpVer = (req: ExtendedRequest, res: Response, next: NextFunction) => {
   const { token } = req.query;
   const reqId = req.params.id;
   // @ts-ignore | Once again angry at correct format
