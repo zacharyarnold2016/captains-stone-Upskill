@@ -21,7 +21,7 @@ const projectRouter: RouterFactory = (context: Context) => {
   router.post("/", reqLogger, upload.single("image"), createProject);
 
   // Admin Only
-  router.get("/", adminVerify, reqLogger, getAllProjects);
+  router.get("/", reqLogger, adminVerify, getAllProjects);
 
   router.get("/:id", reqLogger, getOneProject);
 

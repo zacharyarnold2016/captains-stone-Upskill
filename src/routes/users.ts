@@ -26,14 +26,14 @@ const userRouter: RouterFactory = (context: Context) => {
   router.get("/", reqLogger, roles, getAllUsers);
 
   // Get individiual User Via ID
-  router.get("/:id", roles, getOneUser);
+  router.get("/:id", reqLogger, roles, getOneUser);
 
-  router.get("/:userId/cv", cv);
+  router.get("/:userId/cv", reqLogger, cv);
 
-  router.put("/:id", userVer, updateUser);
+  router.put("/:id", reqLogger, userVer, updateUser);
 
   // Admin Locked Delete Method
-  router.delete("/:id", roles, deleteUser);
+  router.delete("/:id", reqLogger, roles, deleteUser);
   return router;
 };
 

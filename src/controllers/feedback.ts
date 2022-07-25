@@ -29,7 +29,7 @@ const getAllFeedback = async (req: ExtendedRequest, res: Response) => {
 const getOneFeedback = async (req: ExtendedRequest, res: Response) => {
   const { id } = req.params;
   const feedback: Feedback = await Feedback.findOne({
-    where: { to_user: id },
+    where: { id },
   });
 
   res.json({

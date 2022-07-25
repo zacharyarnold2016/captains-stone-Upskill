@@ -84,7 +84,7 @@ export const initializeAdmin: any = async () => {
       image: "NoImage",
       title: "Admin",
       summary: "NoSummary",
-      role: UserRole.Admin,
+      role: UserRole.ADMIN,
       email: "admin@admin.com",
       password,
     });

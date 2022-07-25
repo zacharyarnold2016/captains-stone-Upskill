@@ -13,10 +13,7 @@ const roles = async (
 
   // @ts-ignore | I don't really get why it's angry at passing the right thing
   const { user } = jwt.decode(token, "TOP_SECRET");
-  console.log("HERE")
-  console.log(jwt.decode(token, "TOP_SECRET"))
   const { role } = user;
-  console.log(role)
 
   try {
     await User.validate(role);

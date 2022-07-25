@@ -8,7 +8,7 @@ class RedisService {
   }
 
   static async setCache(key, value) {
-    const val = JSON.stringify(value)
+    const val = JSON.stringify(value);
     const a = await RedisService.client.set(key, val);
   }
 
