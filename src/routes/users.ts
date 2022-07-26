@@ -24,7 +24,7 @@ const upload = multer({ dest: "public/users" });
 const userRouter: RouterFactory = (context: Context) => {
   const router = express.Router();
 
-  // Create User
+  // Create User - ADMIN
   router.post(
     "/",
     reqLogger,
@@ -34,17 +34,17 @@ const userRouter: RouterFactory = (context: Context) => {
     register
   );
 
-  // Get paginated groups of users
+  // Get paginated groups of users - ADMIN
   router.get("/", reqLogger, roles, getAllUsers);
 
-  // Get individiual User Via ID
+  // Get individiual User Via ID ANYONE
   router.get("/:id", reqLogger, pathIdValidate, roles, getOneUser);
-
+  // ANYONE
   router.get("/:userId/cv", reqLogger, pathUserIdValidate, cv);
-
+  // ID Holder
   router.put("/:id", reqLogger, pathIdValidate, userVer, updateUser);
 
-  // Admin Locked Delete Method
+  // Admin Locked Delete Method Or ID Holder
   router.delete("/:id", reqLogger, pathIdValidate, roles, deleteUser);
   return router;
 };

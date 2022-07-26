@@ -69,6 +69,8 @@ const pathIdValidate = [param("id").isNumeric().exists().escape()];
 
 const pathUserIdValidate = [param("userId").isNumeric().exists().escape()];
 
+const jwtVerify = [query("token").exists().escape()];
+
 export {
   userValidate,
   feedbackValidate,
@@ -77,4 +79,5 @@ export {
   errorResponse,
   pathIdValidate,
   pathUserIdValidate,
+  jwtVerify,
 };

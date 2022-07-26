@@ -18,7 +18,7 @@ const upload = multer({ dest: "public/projects" });
 const projectRouter: RouterFactory = (context: Context) => {
   // eslint-disable-line no-unused-vars
   const router = express.Router();
-
+  // ADMIN or USER
   router.post(
     "/",
     upload.single("image"),
@@ -27,13 +27,13 @@ const projectRouter: RouterFactory = (context: Context) => {
     createProject
   );
 
-  // Admin Only
+  // ADMIN
   router.get("/", reqLogger, roles, getAllProjects);
-
+  // ANYONE
   router.get("/:id", reqLogger, pathIdValidate, getOneProject);
-
+  // ID HOLDER or ADMIN
   router.put("/:id", reqLogger, pathIdValidate, updateOneProject);
-
+  // ID HOLDER or ADMIN
   router.delete(":id", reqLogger, pathIdValidate, deleteProject);
 
   return router;

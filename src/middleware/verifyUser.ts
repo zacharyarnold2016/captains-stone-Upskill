@@ -6,9 +6,9 @@ import Project from "../models/project.model";
 import Feedback from "../models/feedback.model";
 import { ExtendedRequest } from "../interfaces/express";
 
-const xpVer = (req: ExtendedRequest, res: Response, next: NextFunction) => {
+const xpUserVer = (req: ExtendedRequest, res: Response, next: NextFunction) => {
   const { token } = req.query;
-  const reqId = req.params.id;
+  const reqId = req.params.user_id;
   // @ts-ignore | Once again angry at correct format
   const user = jwt.decode(token, "TOP_SECRET");
   const { id } = user;
@@ -36,8 +36,4 @@ const userVer = (req: ExtendedRequest, res: Response, next: NextFunction) => {
   return next();
 };
 
-const projVer = (req, res, next) => {};
-
-const feedbackVer = (req, res, next) => {};
-
-export { xpVer, userVer, projVer, feedbackVer };
+export { xpUserVer, userVer };

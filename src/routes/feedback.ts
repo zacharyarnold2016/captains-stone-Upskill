@@ -13,15 +13,15 @@ import { feedbackValidate, pathIdValidate } from "../middleware/validation";
 const feedRouter: RouterFactory = (context: Context) => {
   const router = express.Router();
 
-  // Create and experience
+  // USER OR ADMIN
   router.post("/", reqLogger, feedbackValidate, addFeedback);
-
+  // ADMIN
   router.get("/", reqLogger, getAllFeedback);
-
+  // ANYONE
   router.get("/:id", reqLogger, pathIdValidate, getOneFeedback);
-
+  // ID Holder or ADMIN
   router.put("/:id", reqLogger, pathIdValidate, updateFeedback);
-
+  // ID Holder or ADMIN
   router.delete(":id", reqLogger, pathIdValidate, deleteFeedback);
 
   return router;
