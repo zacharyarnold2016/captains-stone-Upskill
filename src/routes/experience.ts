@@ -20,10 +20,13 @@ const expRouter: RouterFactory = (contex: Context) => {
 
   // Admin Only
   router.get("/", reqLogger, roles, getAllExperience);
+  
   // ANYONE
   router.get("/:id", reqLogger, pathIdValidate, getOneExperience);
+
   // ID HOLDER ADMIN
   router.put("/:id", reqLogger, pathIdValidate, updateExperience);
+
   // ID HOLDER ADMIN
   router.delete("/:id", reqLogger, pathIdValidate, deleteExperience);
 

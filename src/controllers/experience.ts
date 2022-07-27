@@ -73,9 +73,12 @@ const updateExperience = async (
       update,
       { where: { id } }
     );
+    const retExperience: Experience = await Experience.findOne({
+      where: { id },
+    });
     const { user_id } = experience;
     await RedisService.clearCache(`cv${user_id}`);
-    res.send(newExperience);
+    res.send(retExperience);
   } catch (err) {
     logger.error(err.message);
     res.status(505).send("An Internal Error Occured");
@@ -94,6 +97,7 @@ const deleteExperience = async (req: ExtendedRequest, res: Response) => {
     return res.send("Successfully Exterminated");
   } catch (err) {
     logger.error(err.message);
+    res.status(505).send("An Internal Error Occured");
     return err;
   }
 };
