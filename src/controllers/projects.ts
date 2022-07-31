@@ -59,7 +59,7 @@ const getAllProjects = async (req: ExtendedRequest, res: Response) => {
 const getOneProject = async (req: ExtendedRequest, res: Response) => {
   try {
     const { id } = req.params;
-    const project: Project = await Project.findOne({ where: { user_id: id } });
+    const project: Project = await Project.findOne({ where: { id } });
     if (!project) {
       res.status(404).json({ error: "No Project Found!" });
     } else {

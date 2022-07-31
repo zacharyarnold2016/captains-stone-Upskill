@@ -30,10 +30,10 @@ const userRouter: RouterFactory = (context: Context) => {
   // Create User - ADMIN
   router.post(
     "/",
-    reqLogger,
-    userValidate,
-    roles,
     upload.single("image"),
+    reqLogger,
+    roles,
+    userValidate,
     errorResponse,
     errorHandler,
     register
