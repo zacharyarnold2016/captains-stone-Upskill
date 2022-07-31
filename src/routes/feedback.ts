@@ -16,12 +16,13 @@ import {
 } from "../middleware/validation";
 import roles from "../middleware/roles";
 import errorHandler from "../middleware/errorHandler";
+import { feedVer } from "../middleware/verifyUser";
 
 const feedRouter: RouterFactory = (context: Context) => {
   const router = express.Router();
 
   // USER OR ADMIN
-  router.post("/", reqLogger, feedbackValidate, addFeedback);
+  router.post("/", reqLogger, feedbackValidate, feedVer, addFeedback);
   // ADMIN
   router.get(
     "/",

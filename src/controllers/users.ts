@@ -71,11 +71,12 @@ const updateUser = async (req: ExtendedRequest, res: Response) => {
     if (!user) {
       logger.error("No User Found");
       res.status(404).json({ error: "No User Found" });
-    }
-    await User.update(update, { where: { id } });
-    const newUser = await User.findOne({ where: { id } });
+    } else {
+      await User.update(update, { where: { id } });
+      const newUser = await User.findOne({ where: { id } });
 
-    res.json({ user: newUser });
+      res.json({ user: newUser });
+    }
   } catch (err) {
     logger.error(err.message);
     res.status(505).json({ error: err.message });
@@ -106,16 +107,17 @@ const cv = async (req: ExtendedRequest, res: Response) => {
 };
 
 const deleteUser = async (req: ExtendedRequest, res: Response) => {
-  const { id } = req.params;
   try {
+    const { id } = req.params;
     const user = await User.findOne({ where: { id } });
     if (!user) {
       res.status(404).json({
         error: "User not found!",
       });
+    } else {
+      await User.destroy({ where: { id } });
+      res.json({ message: "deleted" });
     }
-    await User.destroy({ where: { id } });
-    res.json({ message: "deleted" });
   } catch (err) {
     logger.error(err.message);
     res.status(505).json({ error: err.message });

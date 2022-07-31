@@ -17,6 +17,7 @@ import {
   queryVerify,
 } from "../middleware/validation";
 import errorHandler from "../middleware/errorHandler";
+import { xpUserVer } from "../middleware/verifyUser";
 
 const expRouter: RouterFactory = (contex: Context) => {
   // eslint-disable-line no-unused-vars
@@ -27,6 +28,7 @@ const expRouter: RouterFactory = (contex: Context) => {
     reqLogger,
     experienceValidate,
     errorResponse,
+    xpUserVer,
     errorHandler,
     addExperience
   );

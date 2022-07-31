@@ -3,7 +3,6 @@
 import { jest } from "@jest/globals";
 import http_mocks from "node-mocks-http";
 import events from "events";
-import { Json } from "sequelize/types/lib/utils";
 import {
   addExperience,
   getAllExperience,

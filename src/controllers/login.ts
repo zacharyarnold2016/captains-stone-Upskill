@@ -11,7 +11,10 @@ const login = async (
   passport.authenticate("login", async (err, user) => {
     if (err || !user) {
       if (!user) {
-        return res.status(404).send(next(err));
+        res
+          .status(404)
+          .json({ error: "User with that Email/Password not found" });
+        return next(err);
       }
       return res.status(400).send(next(err));
     }

@@ -18,6 +18,7 @@ import {
 } from "../middleware/validation";
 import roles from "../middleware/roles";
 import errorHandler from "../middleware/errorHandler";
+import { projVer } from "../middleware/verifyUser";
 
 const upload = multer({ dest: "public/projects" });
 
@@ -29,6 +30,7 @@ const projectRouter: RouterFactory = (context: Context) => {
     "/",
     upload.single("image"),
     reqLogger,
+    projVer,
     projectValidate,
     errorResponse,
     errorHandler,

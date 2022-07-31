@@ -7,10 +7,10 @@ import { ExtendedRequest } from "../interfaces/express";
 const SALT = 5;
 
 const register = async (req: ExtendedRequest, res: Response) => {
-  const { firstName, lastName, title, summary, role, email, password } =
-    req.body;
-  const image = req.file.path;
   try {
+    const { firstName, lastName, title, summary, role, email, password } =
+      req.body;
+    const image = req.file.path;
     const hash: string = await bcrypt.hash(password, SALT);
     try {
       const user = await User.create({

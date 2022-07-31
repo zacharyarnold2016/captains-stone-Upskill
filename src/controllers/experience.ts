@@ -25,10 +25,10 @@ const addExperience = async (
     res.json({
       experience,
     });
-    logger.info(`${user_id} Experience Post Successful`);
+    logger.info(`${req.id}: ${user_id} Experience Post Successful`);
     await RedisService.clearCache(`cv${user_id}`);
   } catch (err) {
-    logger.error(err.message);
+    logger.error(`${req.id}: ${err.message}`);
     res.status(505).json({ error: err.message });
   }
 };
@@ -39,9 +39,14 @@ const getAllExperience = async (
 ): Promise<void> => {
   try {
     const { page, pageSize, query, target } = req.query;
+    // @ts-ignore
     const pageInt = parseInt(page, 10);
+    // @ts-ignore
+
     const { limit, offset } = getPagination(pageInt, pageSize);
     if (!query) {
+      // @ts-ignore
+
       const data: Experience[] = await Experience.findAndCountAll({
         limit,
         offset,
@@ -55,6 +60,7 @@ const getAllExperience = async (
         experiences: response,
       });
     } else {
+      // @ts-ignore
       const condition = { [query]: target };
       const data = await Experience.findAndCountAll({
         where: condition,
@@ -84,11 +90,13 @@ const getOneExperience = async (
 
     if (!arr) {
       res.status(404).json({ message: `Experience not found!` });
+    } else {
+      res.json({
+        experience: arr,
+      });
     }
-    res.json({
-      experience: arr,
-    });
   } catch (err) {
+    logger.error(`${req.id}: An Internal Error Occurred: ${err.message}`);
     res.status(505).json({ error: err.message });
   }
 };
@@ -105,18 +113,18 @@ const updateExperience = async (
     if (!experience) {
       logger.error("No Experience found");
       res.status(404).json({ error: "No Experience Found!" });
+    } else {
+      await Experience.update(update, { where: { id } });
+      const retExperience: Experience = await Experience.findOne({
+        where: { id },
+      });
+
+      const { user_id } = experience;
+      await RedisService.clearCache(`cv${user_id}`);
+      res.json({ experience: retExperience });
     }
-
-    await Experience.update(update, { where: { id } });
-    const retExperience: Experience = await Experience.findOne({
-      where: { id },
-    });
-
-    const { user_id } = experience;
-    await RedisService.clearCache(`cv${user_id}`);
-    res.json({ experience: retExperience });
   } catch (err) {
-    logger.error(err.message);
+    logger.error(`${req.id}: An Internal Error Occurred: ${err.message}`);
     res.status(505).json({ error: err.message });
   }
 };
@@ -124,18 +132,19 @@ const updateExperience = async (
 const deleteExperience = async (req: ExtendedRequest, res: Response) => {
   const { id } = req.params;
   try {
-    const result = await Experience.findOne({ where: { id } });
+    const result: Experience = await Experience.findOne({ where: { id } });
     if (!result) {
       res.status(404).json({
         error: "Experience not found!",
       });
+    } else {
+      const { user_id } = result;
+      await Experience.destroy({ where: { id } });
+      await RedisService.clearCache(`cv${user_id}`);
+      res.json({ message: "deleted" });
     }
-    const { user_id } = result;
-    await Experience.destroy({ where: { id } });
-    await RedisService.clearCache(`cv${user_id}`);
-    res.json({ message: "deleted" });
   } catch (err) {
-    logger.error(err.message);
+    logger.error(`${req.id}: An Internal Error Occured: ${err.message}`);
     res.status(505).json({ error: err.message });
     return err;
   }

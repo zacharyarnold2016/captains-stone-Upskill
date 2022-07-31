@@ -26,7 +26,7 @@ describe("JWT Authorization Service", () => {
     });
     it("Should, Give no Input, Return an error", async () => {
       try {
-        await AuthService.decodeId();
+        await AuthService.decodeId("A");
       } catch (e) {
         expect(e).toBeInstanceOf(Error);
       }
@@ -43,7 +43,7 @@ describe("JWT Authorization Service", () => {
     });
     it("Should, Given no Input, Return an error", async () => {
       try {
-        await AuthService.decodeBody();
+        await AuthService.decodeBody("A");
       } catch (e) {
         expect(e).toBeInstanceOf(Error);
       }
@@ -57,10 +57,11 @@ describe("JWT Authorization Service", () => {
     });
     it("Should, Given no Input, Return an error", async () => {
       try {
-        await AuthService.decodeRole();
+        await AuthService.decodeRole("A");
       } catch (e) {
         expect(e).toBeInstanceOf(Error);
       }
     });
   });
 });
+
