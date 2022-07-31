@@ -2,14 +2,14 @@ import { DataTypes, Model, Optional, Sequelize } from "sequelize";
 import { Models } from "../interfaces/general";
 import { User } from "./user.model";
 
-interface ProjectAttributes {
+export interface ProjectAttributes {
   id: number;
   user_id: number;
   image: string;
   description: string;
 }
 
-export default class Project
+export class Project
   extends Model<ProjectAttributes, Optional<ProjectAttributes, "id">>
   implements ProjectAttributes
 {

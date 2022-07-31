@@ -9,11 +9,11 @@ const errorResponse = (
   next: NextFunction
 ) => {
   const errors = validationResult(req);
-
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    res.status(400).json({ errors: errors.array() });
+  } else {
+    next();
   }
-  return next();
 };
 
 const userValidate = [
@@ -33,6 +33,11 @@ const userValidate = [
       }
       return true;
     }),
+];
+
+const loginValidate = [
+  body("email").trim().toLowerCase().isLength({ min: 5 }).isEmail().escape(),
+  body("password").trim().isLength({ min: 5 }).escape(),
 ];
 
 const experienceValidate = [
@@ -71,6 +76,13 @@ const pathUserIdValidate = [param("userId").isNumeric().exists().escape()];
 
 const jwtVerify = [query("token").exists().escape()];
 
+const queryVerify = [
+  query("pageSize").escape().trim().isNumeric(),
+  query("page").escape().trim().isNumeric(),
+  query("query").escape().trim().isAlphanumeric(),
+  query("target").escape().trim().isAlphanumeric(),
+];
+
 export {
   userValidate,
   feedbackValidate,
@@ -80,4 +92,6 @@ export {
   pathIdValidate,
   pathUserIdValidate,
   jwtVerify,
+  loginValidate,
+  queryVerify
 };

@@ -10,8 +10,14 @@ import {
   updateOneProject,
   deleteProject,
 } from "../controllers/projects";
-import { projectValidate, pathIdValidate } from "../middleware/validation";
+import {
+  projectValidate,
+  pathIdValidate,
+  errorResponse,
+  queryVerify,
+} from "../middleware/validation";
 import roles from "../middleware/roles";
+import errorHandler from "../middleware/errorHandler";
 
 const upload = multer({ dest: "public/projects" });
 
@@ -24,17 +30,48 @@ const projectRouter: RouterFactory = (context: Context) => {
     upload.single("image"),
     reqLogger,
     projectValidate,
+    errorResponse,
+    errorHandler,
     createProject
   );
 
   // ADMIN
-  router.get("/", reqLogger, roles, getAllProjects);
+  router.get(
+    "/",
+    reqLogger,
+    queryVerify,
+    roles,
+    errorResponse,
+    errorHandler,
+    getAllProjects
+  );
   // ANYONE
-  router.get("/:id", reqLogger, pathIdValidate, getOneProject);
+  router.get(
+    "/:id",
+    reqLogger,
+    pathIdValidate,
+    errorResponse,
+    errorHandler,
+    getOneProject
+  );
   // ID HOLDER or ADMIN
-  router.put("/:id", reqLogger, pathIdValidate, updateOneProject);
+  router.put(
+    "/:id",
+    reqLogger,
+    pathIdValidate,
+    errorResponse,
+    errorHandler,
+    updateOneProject
+  );
   // ID HOLDER or ADMIN
-  router.delete(":id", reqLogger, pathIdValidate, deleteProject);
+  router.delete(
+    ":id",
+    reqLogger,
+    pathIdValidate,
+    errorResponse,
+    errorHandler,
+    deleteProject
+  );
 
   return router;
 };

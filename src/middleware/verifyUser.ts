@@ -1,9 +1,5 @@
 import jwt from "jsonwebtoken";
 import { NextFunction, Response } from "express";
-import { Experience } from "../models/experience.model";
-import { User } from "../models/user.model";
-import Project from "../models/project.model";
-import Feedback from "../models/feedback.model";
 import { ExtendedRequest } from "../interfaces/express";
 
 const xpUserVer = (req: ExtendedRequest, res: Response, next: NextFunction) => {

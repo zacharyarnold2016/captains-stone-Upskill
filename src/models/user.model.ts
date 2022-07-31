@@ -1,8 +1,9 @@
+/* eslint-disable no-shadow */
 import { DataTypes, Model, Optional, Sequelize } from "sequelize";
 import { Models } from "../interfaces/general";
 import { Experience } from "./experience.model";
-import Feedback from "./feedback.model";
-import Project from "./project.model";
+import { Feedback } from "./feedback.model";
+import { Project } from "./project.model";
 
 export enum UserRole {
   ADMIN = "ADMIN",

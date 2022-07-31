@@ -1,8 +1,8 @@
 import express from "express";
-import { AuthService } from "../services/auth.service";
+import AuthService from "../services/auth.service";
 import { User } from "../models/user.model";
-import Project from "../models/project.model";
-import Feedback from "../models/feedback.model";
+import { Project } from "../models/project.model";
+import { Feedback } from "../models/feedback.model";
 import { Experience } from "../models/experience.model";
 import RedisService from "../services/redis.service";
 

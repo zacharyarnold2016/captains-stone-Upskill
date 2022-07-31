@@ -10,25 +10,66 @@ import {
   updateExperience,
   deleteExperience,
 } from "../controllers/experience";
-import { experienceValidate, pathIdValidate } from "../middleware/validation";
+import {
+  experienceValidate,
+  pathIdValidate,
+  errorResponse,
+  queryVerify,
+} from "../middleware/validation";
+import errorHandler from "../middleware/errorHandler";
 
 const expRouter: RouterFactory = (contex: Context) => {
   // eslint-disable-line no-unused-vars
   const router = express.Router();
   // ADMIN or USER
-  router.post("/", reqLogger, experienceValidate, addExperience);
+  router.post(
+    "/",
+    reqLogger,
+    experienceValidate,
+    errorResponse,
+    errorHandler,
+    addExperience
+  );
 
   // Admin Only
-  router.get("/", reqLogger, roles, getAllExperience);
-  
+  router.get(
+    "/",
+    reqLogger,
+    queryVerify,
+    roles,
+    errorResponse,
+    errorHandler,
+    getAllExperience
+  );
+
   // ANYONE
-  router.get("/:id", reqLogger, pathIdValidate, getOneExperience);
+  router.get(
+    "/:id",
+    reqLogger,
+    pathIdValidate,
+    errorResponse,
+    errorHandler,
+    getOneExperience
+  );
 
   // ID HOLDER ADMIN
-  router.put("/:id", reqLogger, pathIdValidate, updateExperience);
+  router.put(
+    "/:id",
+    reqLogger,
+    pathIdValidate,
+    errorResponse,
+    errorHandler,
+    updateExperience
+  );
 
   // ID HOLDER ADMIN
-  router.delete("/:id", reqLogger, pathIdValidate, deleteExperience);
+  router.delete(
+    "/:id",
+    reqLogger,
+    pathIdValidate,
+    errorResponse,
+    deleteExperience
+  );
 
   return router;
 };

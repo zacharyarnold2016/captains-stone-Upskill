@@ -1,5 +1,4 @@
 import { NextFunction, Response } from "express";
-import jwt from "jsonwebtoken";
 import { ExtendedRequest } from "../interfaces/express";
 import logger from "../libs/logger";
 

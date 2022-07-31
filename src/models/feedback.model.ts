@@ -2,7 +2,7 @@ import { DataTypes, Model, Optional, Sequelize } from "sequelize";
 import { Models } from "../interfaces/general";
 import { User } from "./user.model";
 
-interface FeedbackAttributes {
+export interface FeedbackAttributes {
   id: number;
   from_user: number;
   to_user: number;
@@ -10,7 +10,7 @@ interface FeedbackAttributes {
   company_name: string;
 }
 
-export default class Feedback
+export class Feedback
   extends Model<FeedbackAttributes, Optional<FeedbackAttributes, "id">>
   implements FeedbackAttributes
 {

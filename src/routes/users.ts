@@ -17,7 +17,10 @@ import {
   userValidate,
   pathIdValidate,
   pathUserIdValidate,
+  errorResponse,
+  queryVerify,
 } from "../middleware/validation";
+import errorHandler from "../middleware/errorHandler";
 
 const upload = multer({ dest: "public/users" });
 
@@ -31,21 +34,53 @@ const userRouter: RouterFactory = (context: Context) => {
     userValidate,
     roles,
     upload.single("image"),
+    errorResponse,
+    errorHandler,
     register
   );
 
   // Get paginated groups of users - ADMIN
-  router.get("/", reqLogger, roles, getAllUsers);
+  router.get("/", reqLogger, queryVerify, roles, errorResponse, getAllUsers);
 
   // Get individiual User Via ID ANYONE
-  router.get("/:id", reqLogger, pathIdValidate, roles, getOneUser);
+  router.get(
+    "/:id",
+    reqLogger,
+    pathIdValidate,
+    errorResponse,
+    roles,
+    getOneUser
+  );
   // ANYONE
-  router.get("/:userId/cv", reqLogger, pathUserIdValidate, cv);
+  router.get(
+    "/:userId/cv",
+    reqLogger,
+    pathUserIdValidate,
+    errorResponse,
+    errorHandler,
+    cv
+  );
   // ID Holder
-  router.put("/:id", reqLogger, pathIdValidate, userVer, updateUser);
+  router.put(
+    "/:id",
+    reqLogger,
+    pathIdValidate,
+    errorResponse,
+    userVer,
+    errorHandler,
+    updateUser
+  );
 
   // Admin Locked Delete Method Or ID Holder
-  router.delete("/:id", reqLogger, pathIdValidate, roles, deleteUser);
+  router.delete(
+    "/:id",
+    reqLogger,
+    pathIdValidate,
+    errorResponse,
+    roles,
+    errorHandler,
+    deleteUser
+  );
   return router;
 };
 

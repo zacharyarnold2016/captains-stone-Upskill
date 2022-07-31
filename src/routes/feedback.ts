@@ -8,7 +8,14 @@ import {
   updateFeedback,
   deleteFeedback,
 } from "../controllers/feedback";
-import { feedbackValidate, pathIdValidate } from "../middleware/validation";
+import {
+  errorResponse,
+  feedbackValidate,
+  pathIdValidate,
+  queryVerify,
+} from "../middleware/validation";
+import roles from "../middleware/roles";
+import errorHandler from "../middleware/errorHandler";
 
 const feedRouter: RouterFactory = (context: Context) => {
   const router = express.Router();
@@ -16,13 +23,42 @@ const feedRouter: RouterFactory = (context: Context) => {
   // USER OR ADMIN
   router.post("/", reqLogger, feedbackValidate, addFeedback);
   // ADMIN
-  router.get("/", reqLogger, getAllFeedback);
+  router.get(
+    "/",
+    reqLogger,
+    queryVerify,
+    roles,
+    errorResponse,
+    errorHandler,
+    getAllFeedback
+  );
   // ANYONE
-  router.get("/:id", reqLogger, pathIdValidate, getOneFeedback);
+  router.get(
+    "/:id",
+    reqLogger,
+    pathIdValidate,
+    errorResponse,
+    errorHandler,
+    getOneFeedback
+  );
   // ID Holder or ADMIN
-  router.put("/:id", reqLogger, pathIdValidate, updateFeedback);
+  router.put(
+    "/:id",
+    reqLogger,
+    pathIdValidate,
+    errorResponse,
+    errorHandler,
+    updateFeedback
+  );
   // ID Holder or ADMIN
-  router.delete(":id", reqLogger, pathIdValidate, deleteFeedback);
+  router.delete(
+    ":id",
+    reqLogger,
+    pathIdValidate,
+    errorResponse,
+    errorHandler,
+    deleteFeedback
+  );
 
   return router;
 };

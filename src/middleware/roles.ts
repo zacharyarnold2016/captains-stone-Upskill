@@ -14,13 +14,12 @@ const roles = async (
   // @ts-ignore | I don't really get why it's angry at passing the right thing
   const { user } = jwt.decode(token, "TOP_SECRET");
   const { role } = user;
-
   try {
     await User.validate(role);
     next();
   } catch (err) {
     logger.warn(`${req.id} made an unsuccessful attempt to access Admin Route`);
-    res.status(403).send("Only Admin can access this route");
+    res.status(403).json({ error: err.message });
   }
 };
 

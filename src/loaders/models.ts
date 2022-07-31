@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 import { Experience } from "../models/experience.model";
-import Feedback from "../models/feedback.model";
-import Project from "../models/project.model";
+import { Feedback } from "../models/feedback.model";
+import { Project } from "../models/project.model";
 import { Models } from "../interfaces/general";
 import { User } from "../models/user.model";
 import { initializeAdmin } from "../migrations/2021.09.30T19.59.32.users-schema";

@@ -1,5 +1,6 @@
 import { Response } from "express";
 import bcrypt from "bcrypt";
+import logger from "../libs/logger";
 import { User } from "../models/user.model";
 import { ExtendedRequest } from "../interfaces/express";
 
@@ -33,12 +34,14 @@ const register = async (req: ExtendedRequest, res: Response) => {
         image,
       };
 
-      res.status(200).send(returnedUser);
+      res.json(returnedUser);
     } catch (err) {
-      res.status(400).send(err.message);
+      logger.error(err.message);
+      res.status(400).json({ error: err.message });
     }
   } catch (err) {
-    res.status(505).send(err.message);
+    logger.error(err.message);
+    res.status(505).json({ error: err.message });
   }
 };
 

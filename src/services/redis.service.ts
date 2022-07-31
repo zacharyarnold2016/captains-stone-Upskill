@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { createClient } from "redis";
 
 class RedisService {
