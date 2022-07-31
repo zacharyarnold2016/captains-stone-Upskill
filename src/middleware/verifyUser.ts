@@ -85,6 +85,11 @@ const feedVer = (req: ExtendedRequest, res: Response, next: NextFunction) => {
   const reqId = req.body.from_user;
   // @ts-ignore | Once again angry at correct format
   const { user } = jwt.decode(token, "TOP_SECRET");
+  if (!user) {
+    const e = new Error("Must include JWT");
+    e.name = "JWT ERROR";
+    return next(e);
+  }
   const { id, role } = user;
   if (role === UserRole.ADMIN) {
     next();

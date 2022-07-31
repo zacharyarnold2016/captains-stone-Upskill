@@ -22,14 +22,22 @@ const feedRouter: RouterFactory = (context: Context) => {
   const router = express.Router();
 
   // USER OR ADMIN
-  router.post("/", reqLogger, feedbackValidate, feedVer, addFeedback);
+  router.post(
+    "/",
+    reqLogger,
+    feedbackValidate,
+    errorResponse,
+    roles,
+    errorHandler,
+    addFeedback
+  );
   // ADMIN
   router.get(
     "/",
     reqLogger,
     queryVerify,
-    roles,
     errorResponse,
+    roles,
     errorHandler,
     getAllFeedback
   );
@@ -53,7 +61,7 @@ const feedRouter: RouterFactory = (context: Context) => {
   );
   // ID Holder or ADMIN
   router.delete(
-    ":id",
+    "/:id",
     reqLogger,
     pathIdValidate,
     errorResponse,

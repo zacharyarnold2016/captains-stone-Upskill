@@ -1,5 +1,5 @@
 import { NextFunction, Response } from "express";
-import { query, param, body, validationResult } from "express-validator";
+import { query, param, body, validationResult, check } from "express-validator";
 import { ExtendedRequest } from "../interfaces/express";
 import { UserRole } from "../models/user.model";
 
@@ -96,18 +96,13 @@ const experienceValidate = [
 
 const feedbackValidate = [
   body("from_user").exists().escape().isNumeric(),
-  body("to").exists().escape().isNumeric(),
-  body("content").isString().isLength({ min: 3, max: 255 }).exists().escape(),
-  body("company_name")
-    .isString()
-    .isLength({ min: 3, max: 127 })
-    .exists()
-    .escape(),
+  body("to_user").exists().escape().isNumeric(),
+  body("content").isString().isLength({ min: 3, max: 255 }).exists(),
+  body("company_name").isString().isLength({ min: 3, max: 127 }).exists(),
 ];
 
 const projectValidate = [
   body("user_id").isNumeric().exists().escape(),
-  body("image").isString().exists().escape(),
   body("description")
     .exists()
     .isString()

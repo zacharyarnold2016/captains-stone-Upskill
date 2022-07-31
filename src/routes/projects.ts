@@ -30,7 +30,6 @@ const projectRouter: RouterFactory = (context: Context) => {
     "/",
     upload.single("image"),
     reqLogger,
-    projVer,
     projectValidate,
     errorResponse,
     errorHandler,
@@ -67,7 +66,7 @@ const projectRouter: RouterFactory = (context: Context) => {
   );
   // ID HOLDER or ADMIN
   router.delete(
-    ":id",
+    "/:id",
     reqLogger,
     pathIdValidate,
     errorResponse,

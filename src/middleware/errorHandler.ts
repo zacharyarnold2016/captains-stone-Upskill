@@ -11,11 +11,9 @@ const errorHandler = (
 ) => {
   if (err) {
     logger.error(`${req.id} had an unexpected error: ${err}`);
-    res.status(500).send(err);
-  } else {
-    return next();
+    return res.status(500).send(err);
   }
-  return 1;
+  return next();
 };
 
 export default errorHandler;

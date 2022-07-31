@@ -20,7 +20,6 @@ const createProject = async (req: ExtendedRequest, res: Response) => {
       project,
     });
     logger.info(`${req.id} Project Post Successful`);
-    return project;
   } catch (err) {
     logger.error(err.message);
     res.status(505).json({ error: err.message });
@@ -63,10 +62,11 @@ const getOneProject = async (req: ExtendedRequest, res: Response) => {
     const project: Project = await Project.findOne({ where: { user_id: id } });
     if (!project) {
       res.status(404).json({ error: "No Project Found!" });
+    } else {
+      res.json({
+        project,
+      });
     }
-    res.json({
-      project,
-    });
   } catch (err) {
     logger.error(err.message);
     res.status(505).json({
@@ -83,13 +83,13 @@ const updateOneProject = async (req: ExtendedRequest, res: Response) => {
 
     if (!project) {
       res.status(404).json({ error: "Project not Found" });
+    } else {
+      await Project.update(update, { where: { id } });
+      const newProject = await Project.findOne({ where: { id } });
+      const { user_id } = project;
+      await RedisService.clearCache(`cv${user_id}`);
+      res.json({ project: newProject });
     }
-
-    await Project.update(update, { where: { id } });
-    const newProject = await Project.findOne({ where: { id } });
-    const { user_id } = project;
-    await RedisService.clearCache(`cv${user_id}`);
-    res.json({ project: newProject });
   } catch (err) {
     logger.error(err.message);
     res.status(505).json({ error: err.message });
@@ -102,11 +102,12 @@ const deleteProject = async (req: ExtendedRequest, res: Response) => {
     const result = await Project.findOne({ where: { id } });
     if (!result) {
       res.status(404).json({ error: "Project not found!" });
+    } else {
+      const { user_id } = result;
+      await Project.destroy({ where: { id } });
+      await RedisService.clearCache(`cv${user_id}`);
+      res.json({ message: "deleted" });
     }
-    const { user_id } = result;
-    await Project.destroy({ where: { id } });
-    await RedisService.clearCache(`cv${user_id}`);
-    res.json({ message: "deleted" });
   } catch (err) {
     logger.error(err.message);
     res.status(505).json({ error: err.message });

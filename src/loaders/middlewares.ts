@@ -7,7 +7,6 @@ const loadMiddlewares: Loader = (app, context) => {
   app.use(expressRequestId());
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
-  app.use(errorHandler);
 };
 
 export default loadMiddlewares;
