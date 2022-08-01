@@ -32,6 +32,9 @@
     },
     "extensionsToTreatAsEsm": [
       ".ts"
+    ],
+    "setupFilesAfterEnv": [
+      "./test/setup.ts"
     ]
   },
   "keywords": [],

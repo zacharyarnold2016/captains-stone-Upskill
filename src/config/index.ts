@@ -17,6 +17,7 @@ export interface Config {
 
 const configs: {
   development: Config;
+  test: Config
 } = {
   development: {
     db: {
@@ -34,6 +35,22 @@ const configs: {
       secret: "some-dev-secret",
     },
   },
+  test: {
+    db: {
+      host: "localhost",
+      port: 3306,
+      username: "dev",
+      password: "dev",
+      database: "capstone_project"
+    },
+    redis: {
+      host: 'localhost',
+      port: 6379
+    },
+    auth: {
+      secret: 'some-dev-secret'
+    }
+  }
 };
 
 const getConfig = (): Config => {
