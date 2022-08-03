@@ -111,7 +111,6 @@ const updateExperience = async (
     const experience: Experience = await Experience.findOne({ where: { id } });
 
     if (!experience) {
-      logger.error("No Experience found");
       res.status(404).json({ error: "No Experience Found!" });
     } else {
       await Experience.update(update, { where: { id } });

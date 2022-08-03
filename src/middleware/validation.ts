@@ -49,7 +49,8 @@ const userValidate = [
         return false;
       }
       return true;
-    }),
+    })
+    .withMessage("Role must be 'ADMIN' or 'USER'"),
 ];
 
 const loginValidate = [
@@ -83,8 +84,16 @@ const experienceValidate = [
     .exists()
     .escape()
     .withMessage("Role must be a minimum of 3 characters long"),
-  body("startDate").exists().escape().toDate(),
-  body("endDate").exists().escape().toDate(),
+  body("startDate")
+    .exists()
+    .escape()
+    .toDate()
+    .withMessage("Must include Date: MM-DD-YYYY"),
+  body("endDate")
+    .exists()
+    .escape()
+    .toDate()
+    .withMessage("Must include Date: MM-DD-YYYY"),
   body("description")
     .exists()
     .escape()
@@ -95,30 +104,78 @@ const experienceValidate = [
 ];
 
 const feedbackValidate = [
-  body("from_user").exists().escape().isNumeric(),
-  body("to_user").exists().escape().isNumeric(),
-  body("content").isString().isLength({ min: 3, max: 255 }).exists(),
-  body("company_name").isString().isLength({ min: 3, max: 127 }).exists(),
+  body("from_user")
+    .exists()
+    .withMessage("from_user: required field!")
+    .escape()
+    .isNumeric()
+    .withMessage("From User must be a number"),
+  body("to_user")
+    .exists()
+    .withMessage("To User is a required Field")
+    .escape()
+    .isNumeric()
+    .withMessage("From User must be a number!"),
+  body("content")
+    .isString()
+    .isLength({ min: 3, max: 255 })
+    .withMessage("Content cannot exceed 255 Characters")
+    .exists()
+    .withMessage("Must have body"),
+  body("company_name")
+    .isString()
+    .isLength({ min: 3, max: 127 })
+    .withMessage("Company Name Cannot Exceed 127 Characters")
+    .exists()
+    .withMessage("Company Name is a required field"),
 ];
 
 const projectValidate = [
   body("user_id").isNumeric().exists().escape(),
   body("description")
     .exists()
+    .withMessage("Description Required")
     .isString()
     .isLength({ min: 3, max: 255 })
+    .withMessage("Description cannot exceed 255 Characters")
     .escape(),
 ];
 
-const pathIdValidate = [param("id").isNumeric().exists().escape()];
+const pathIdValidate = [
+  param("id")
+    .isNumeric()
+    .withMessage("id Must be a number")
+    .exists()
+    .withMessage("Must provide id!")
+    .escape(),
+];
 
-const pathUserIdValidate = [param("userId").isNumeric().exists().escape()];
+const pathUserIdValidate = [
+  param("userId")
+    .isNumeric()
+    .withMessage("userId must be a number")
+    .exists()
+    .withMessage("Must Provide userId field")
+    .escape(),
+];
 
-const jwtVerify = [query("token").exists().escape()];
+const jwtVerify = [
+  query("token").exists().withMessage("Must Provide JWT").escape(),
+];
 
 const queryVerify = [
-  query("pageSize").optional().escape().trim().isNumeric(),
-  query("page").optional().escape().trim().isNumeric(),
+  query("pageSize")
+    .optional()
+    .escape()
+    .trim()
+    .isNumeric()
+    .withMessage("pageSize must be a number"),
+  query("page")
+    .optional()
+    .escape()
+    .trim()
+    .isNumeric()
+    .withMessage("page must be a number"),
   query("query").optional().escape().trim(),
   query("target").optional().escape().trim(),
 ];

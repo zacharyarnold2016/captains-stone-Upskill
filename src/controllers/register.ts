@@ -36,11 +36,11 @@ const register = async (req: ExtendedRequest, res: Response) => {
 
       res.json(returnedUser);
     } catch (err) {
-      logger.error(err.message);
+      logger.error(`${req.id}: Bad Request: ${err.message}`);
       res.status(400).json({ error: err.message });
     }
   } catch (err) {
-    logger.error(err.message);
+    logger.error(`${req.id}: Internal Error: ${err.message}`);
     res.status(505).json({ error: err.message });
   }
 };

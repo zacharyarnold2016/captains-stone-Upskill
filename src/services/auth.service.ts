@@ -6,7 +6,6 @@ export default class AuthService {
     if (!token) {
       throw new Error("Token must be Provided!");
     }
-    // @ts-ignore
     const { user } = jwt.decode(token, "TOP_SECRET");
     const { id } = user;
     return id;

@@ -12,11 +12,14 @@ import {
 } from "../../src/controllers/feedback";
 import { Feedback } from "../../src/models/feedback.model";
 import RedisService from "../../src/services/redis.service";
+import FeedbackService from "../../src/services/feedback.service";
 
 jest.mock("../../src/services/redis.service");
 jest.mock("../../src/models/feedback.model");
+jest.mock("../../src/services/feedback.service");
 const mockedFeedback = jest.mocked(Feedback, true);
 const mockedRedis = jest.mocked(RedisService, true);
+const mockedFeedbackService = jest.mocked(FeedbackService, true);
 
 const mockDb = [
   { id: 1, str: "Dummy" },
@@ -43,6 +46,7 @@ describe("Feedback Controller: Testing Response Code Formats", () => {
   afterAll(() => {
     jest.unmock("../../src/services/redis.service");
     jest.unmock("../../src/models/feedback.model");
+    jest.unmock("../../src/services/feedback.service");
   });
 
   describe("Add Feedback", () => {
@@ -60,7 +64,7 @@ describe("Feedback Controller: Testing Response Code Formats", () => {
           company_name: "EPAM",
         },
       });
-      mockedFeedback.create.mockReturnValueOnce(request.body);
+      mockedFeedbackService.create.mockReturnValueOnce(request.body);
       response.on("end", () => {
         data = response._getData();
         stat = response._getStatusCode();
@@ -89,7 +93,7 @@ describe("Feedback Controller: Testing Response Code Formats", () => {
           company_name: "EPAM",
         },
       });
-      mockedFeedback.create.mockImplementationOnce(() => {
+      mockedFeedbackService.create.mockImplementationOnce(() => {
         throw Error("Error");
       });
       response.on("end", () => {
@@ -270,8 +274,9 @@ describe("Feedback Controller: Testing Response Code Formats", () => {
         const ret = { user_id: 1 };
         return ret;
       });
-      mockedFeedback.update.mockImplementationOnce(async () => mockDb[0]);
-      mockedFeedback.findOne.mockImplementationOnce(async () => "Filler");
+      mockedFeedbackService.update.mockImplementationOnce(
+        async () => mockDb[0]
+      );
 
       let data;
       let stat;
@@ -301,7 +306,10 @@ describe("Feedback Controller: Testing Response Code Formats", () => {
       const a = JSON.parse(data);
 
       expect(a).toStrictEqual({
-        feedback: "Filler",
+        feedback: {
+          id: 1,
+          str: "Dummy",
+        },
       });
       expect(stat).toBe(200);
     });

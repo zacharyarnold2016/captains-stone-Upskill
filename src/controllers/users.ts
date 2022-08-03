@@ -38,7 +38,7 @@ const getAllUsers = async (req: ExtendedRequest, res: Response) => {
       res.json({ users: response });
     }
   } catch (err) {
-    logger.error(err.message);
+    logger.error(`${req.id}: Internal Error: ${err.message}`);
     res.status(505).json({
       error: err.message,
     });
@@ -56,7 +56,7 @@ const getOneUser = async (req: ExtendedRequest, res: Response) => {
     }
     res.json({ user });
   } catch (err) {
-    logger.error(err.message);
+    logger.error(`${req.id}: Internal Error: ${err.message}`);
     res.status(505).json({
       error: err.message,
     });
@@ -69,7 +69,6 @@ const updateUser = async (req: ExtendedRequest, res: Response) => {
   try {
     const user = await User.findOne({ where: { id } });
     if (!user) {
-      logger.error("No User Found");
       res.status(404).json({ error: "No User Found" });
     } else {
       await User.update(update, { where: { id } });
@@ -78,7 +77,7 @@ const updateUser = async (req: ExtendedRequest, res: Response) => {
       res.json({ user: newUser });
     }
   } catch (err) {
-    logger.error(err.message);
+    logger.error(`${req.id}: Internal Error: ${err.message}`);
     res.status(505).json({ error: err.message });
   }
 };
@@ -99,7 +98,7 @@ const cv = async (req: ExtendedRequest, res: Response) => {
       res.json({ user: result });
     }
   } catch (err) {
-    logger.error(err.message);
+    logger.error(`${req.id}: Internal Error: ${err.message}`);
     res.status(505).json({
       error: err.message,
     });
@@ -119,7 +118,7 @@ const deleteUser = async (req: ExtendedRequest, res: Response) => {
       res.json({ message: "deleted" });
     }
   } catch (err) {
-    logger.error(err.message);
+    logger.error(`${req.id}: Internal Error: ${err.message}`);
     res.status(505).json({ error: err.message });
   }
 };

@@ -19,9 +19,8 @@ const createProject = async (req: ExtendedRequest, res: Response) => {
     res.json({
       project,
     });
-    logger.info(`${req.id} Project Post Successful`);
   } catch (err) {
-    logger.error(err.message);
+    logger.error(`${req.id}: Internal Error: ${err.message}`);
     res.status(505).json({ error: err.message });
   }
   return 1;
@@ -51,7 +50,7 @@ const getAllProjects = async (req: ExtendedRequest, res: Response) => {
       res.json({ projects: response });
     }
   } catch (err) {
-    logger.error(err.message);
+    logger.error(`${req.id}: Internal Error: ${err.message}`);
     res.status(505).json({ error: err.message });
   }
 };
@@ -68,7 +67,7 @@ const getOneProject = async (req: ExtendedRequest, res: Response) => {
       });
     }
   } catch (err) {
-    logger.error(err.message);
+    logger.error(`${req.id}: Internal Error: ${err.message}`);
     res.status(505).json({
       error: err.message,
     });
@@ -91,7 +90,7 @@ const updateOneProject = async (req: ExtendedRequest, res: Response) => {
       res.json({ project: newProject });
     }
   } catch (err) {
-    logger.error(err.message);
+    logger.error(`${req.id}: Internal Error: ${err.message}`);
     res.status(505).json({ error: err.message });
   }
 };
@@ -109,7 +108,7 @@ const deleteProject = async (req: ExtendedRequest, res: Response) => {
       res.json({ message: "deleted" });
     }
   } catch (err) {
-    logger.error(err.message);
+    logger.error(`${req.id}: Internal Error: ${err.message}`);
     res.status(505).json({ error: err.message });
   }
 };

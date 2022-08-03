@@ -4,24 +4,25 @@ import logger from "../libs/logger";
 import { ExtendedRequest } from "../interfaces/express";
 import RedisService from "../services/redis.service";
 import { getPagination, getPagingData } from "../services/page.service";
+import FeedbackService from "../services/feedback.service";
 
 const addFeedback = async (req: ExtendedRequest, res: Response) => {
   try {
     const { from_user, to_user, content, company_name } = req.body;
-    const feedback: Feedback = await Feedback.create({
+    const feedback: Feedback = await FeedbackService.create(
       from_user,
       to_user,
       content,
-      company_name,
-    });
-    await RedisService.clearCache(`cv${to_user}`);
+      company_name
+    );
     res.json({ feedback });
   } catch (err) {
-    logger.error(err.message);
+    logger.error(`${req.id}: bad request: Error:${err.message}`);
     res.status(400).json({ error: err.message });
   }
 };
 
+// TODO: Implement Service
 const getAllFeedback = async (req: ExtendedRequest, res: Response) => {
   try {
     const { page, pageSize, query, target } = req.query;
@@ -53,7 +54,7 @@ const getAllFeedback = async (req: ExtendedRequest, res: Response) => {
       }
     }
   } catch (err) {
-    logger.error(err.message);
+    logger.error(`${req.id}: Internal Error Thrown: ${err.message}`);
     res.status(505).json({ error: err.message });
   }
 };
@@ -72,7 +73,7 @@ const getOneFeedback = async (req: ExtendedRequest, res: Response) => {
       });
     }
   } catch (err) {
-    logger.error(err.message);
+    logger.error(`${req.id}: Internal Error: ${err.message}`);
     res.status(505).json({ error: err.message });
   }
 };
@@ -83,36 +84,29 @@ const updateFeedback = async (req: ExtendedRequest, res: Response) => {
     const update = req.body;
     const feedback = await Feedback.findOne({ where: { id } });
     if (!feedback) {
-      logger.error("No Feedback found");
       res.status(404).json({ error: "No Feedback Found!" });
     } else {
-      const { to_user } = feedback;
-      await Feedback.update(update, { where: { id } });
-      await RedisService.clearCache(`cv${to_user}`);
-
-      const newFeedback = await Feedback.findOne({ where: { id } });
+      const newFeedback = await FeedbackService.update(feedback, id, update);
       res.json({ feedback: newFeedback });
     }
   } catch (err) {
-    logger.error(err.message);
+    logger.error(`${req.id}: Internal Error: ${err.message}`);
     res.status(505).json({ error: err.message });
   }
 };
 
 const deleteFeedback = async (req: ExtendedRequest, res: Response) => {
-  const { id } = req.params;
   try {
+  const { id } = req.params;
     const result = await Feedback.findOne({ where: { id } });
     if (!result) {
       res.status(404).json({ error: "Feedback not found!" });
     } else {
-      const { to_user } = result;
-      await Feedback.destroy({ where: { id } });
-      await RedisService.clearCache(`cv${to_user}`);
+      await FeedbackService.del(result, id);
       res.json({ message: "deleted" });
     }
   } catch (err) {
-    logger.error(err.message);
+    logger.error(`${req.id}: Internal Error: ${err.message}`);
     res.status(505).json({ error: err.message });
   }
 };

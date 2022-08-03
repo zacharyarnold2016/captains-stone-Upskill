@@ -2,6 +2,7 @@ import passport from "passport";
 import jwt from "jsonwebtoken";
 import { NextFunction, Response } from "express";
 import { ExtendedRequest } from "../interfaces/express";
+import logger from "../libs/logger";
 
 const login = async (
   req: ExtendedRequest,
@@ -20,6 +21,7 @@ const login = async (
     }
     req.logIn(user, { session: false }, async (error: Error) => {
       if (error) {
+        logger.error(`${req.id}: Internal Error: ${err.message}`);
         return res.status(505).send(next(error));
       }
       const { id, firstName, lastName, title, summary, email, image, role } =
