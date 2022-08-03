@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Response } from "express";
 
 import { getPagingData, getPagination } from "../services/page.service";

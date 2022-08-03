@@ -10,7 +10,8 @@
     "baseUrl": ".",
     "paths": {
       "*": ["node_modules/*"]
-    }
+    },
+    "noEmitOnError": false
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "test/**/*"]
 }

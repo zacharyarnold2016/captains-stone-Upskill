@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Response } from "express";
 import bcrypt from "bcrypt";
 import logger from "../libs/logger";

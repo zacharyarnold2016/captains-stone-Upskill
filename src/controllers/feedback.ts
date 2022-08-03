@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Response } from "express";
 import { Feedback } from "../models/feedback.model";
 import logger from "../libs/logger";
@@ -28,7 +29,8 @@ const getAllFeedback = async (req: ExtendedRequest, res: Response) => {
     // Consolidate this Block
     const { page, pageSize, query, target } = req.query;
     const pageInt = parseInt(page, 10);
-    const { limit, offset } = getPagination(pageInt, pageSize);
+    const sizeInt = parseInt(pageSize, 10);
+    const { limit, offset } = getPagination(pageInt, sizeInt);
     //
     if (!query) {
       const data: Feedback[] = await Feedback.findAndCountAll({
@@ -99,7 +101,7 @@ const updateFeedback = async (req: ExtendedRequest, res: Response) => {
 
 const deleteFeedback = async (req: ExtendedRequest, res: Response) => {
   try {
-  const { id } = req.params;
+    const { id } = req.params;
     const result = await Feedback.findOne({ where: { id } });
     if (!result) {
       res.status(404).json({ error: "Feedback not found!" });
