@@ -25,9 +25,11 @@ const addFeedback = async (req: ExtendedRequest, res: Response) => {
 // TODO: Implement Service
 const getAllFeedback = async (req: ExtendedRequest, res: Response) => {
   try {
+    // Consolidate this Block
     const { page, pageSize, query, target } = req.query;
     const pageInt = parseInt(page, 10);
     const { limit, offset } = getPagination(pageInt, pageSize);
+    //
     if (!query) {
       const data: Feedback[] = await Feedback.findAndCountAll({
         limit,
