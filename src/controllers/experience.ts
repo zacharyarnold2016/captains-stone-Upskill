@@ -39,15 +39,13 @@ const getAllExperience = async (
 ): Promise<void> => {
   try {
     const { page, pageSize, query, target } = req.query;
-    // @ts-ignore
-    const pageInt = parseInt(page, 10);
-    // @ts-ignore
-
-    const { limit, offset } = getPagination(pageInt, pageSize);
+    // @ts-ignore not recognizing a string as a string but also acknowledges it's a string?
+    const pageInt: number = parseInt(page, 10);
+    // @ts-ignore see previous comment ^
+    const sizeInt: number = parseInt(pageSize, 10);
+    const { limit, offset } = getPagination(pageInt, sizeInt);
     if (!query) {
-      // @ts-ignore
-
-      const data: Experience[] = await Experience.findAndCountAll({
+      const data = await Experience.findAndCountAll({
         limit,
         offset,
       });
@@ -60,7 +58,7 @@ const getAllExperience = async (
         experiences: response,
       });
     } else {
-      // @ts-ignore
+      // @ts-ignore ts gets mad at you for using the variable as a key
       const condition = { [query]: target };
       const data = await Experience.findAndCountAll({
         where: condition,

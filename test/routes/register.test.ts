@@ -4,13 +4,14 @@ import request from "supertest";
 import { User } from "../../src/models/user.model";
 import { Op } from "sequelize";
 
+// Will Replace awful use of "a" variable once i've made sure this all works properly
 describe("app", async () => {
   const app = await loadApp();
   const superTest = request(app);
 
   const server = app.listen();
   it("Should Pass through all validation and return 200 Ok on a successful run", async () => {
-    const a = await superTest
+    const testReq = await superTest
       .post("/api/auth/register")
       .field("firstName", "Zach")
       .field("lastName", "Arnold")
@@ -20,8 +21,8 @@ describe("app", async () => {
       .field("email", "mitch@email.com")
       .field("password", "password")
       .attach("image", "public/test/Let.jpeg");
-    const { body } = a;
-    const { status } = a;
+    const { body } = testReq;
+    const { status } = testReq;
     assert.strictEqual(status, 200);
     await User.destroy({
       where: {
@@ -31,7 +32,7 @@ describe("app", async () => {
   });
 
   it("Should return a censored version of the User upon a successful run", async () => {
-    const a = await superTest
+    const testReq = await superTest
       .post("/api/auth/register")
       .field("firstName", "Zach")
       .field("lastName", "Arnold")
@@ -41,10 +42,10 @@ describe("app", async () => {
       .field("email", "mitch@email.com")
       .field("password", "password")
       .attach("image", "public/test/Let.jpeg");
-    const { body } = a;
+    const { body } = testReq;
     console.log(body);
     const { id, image } = body;
-    const { status } = a;
+    const { status } = testReq;
     assert.deepStrictEqual(body, {
       id,
       firstName: "Zach",
@@ -55,19 +56,111 @@ describe("app", async () => {
       image,
     });
   });
+
+  it("Should return a 400 Bad Request if field (firstName) does not pass validation", async () => {
+    const testReq = await superTest
+      .post("/api/auth/register")
+      .field("firstName", "")
+      .field("lastName", "Arnold")
+      .field("title", "string")
+      .field("summary", "another one")
+      .field("role", "USER")
+      .field("email", "mitch@email.com")
+      .field("password", "password")
+      .attach("image", "public/test/Let.jpeg");
+    const { status } = testReq;
+    assert.strictEqual(status, 400);
+  });
+  it("Should return a 400 Bad Request if field (lastName) does not pass validation", async () => {
+    const testReq = await superTest
+      .post("/api/auth/register")
+      .field("firstName", "Zach")
+      .field("lastName", "")
+      .field("title", "string")
+      .field("summary", "another one")
+      .field("role", "USER")
+      .field("email", "mitch@email.com")
+      .field("password", "password")
+      .attach("image", "public/test/Let.jpeg");
+    const { status } = testReq;
+    assert.strictEqual(status, 400);
+  });
+  it("Should return a 400 Bad Request if field (title) does not pass validation", async () => {
+    const testReq = await superTest
+      .post("/api/auth/register")
+      .field("firstName", "Zach")
+      .field("lastName", "Arnold")
+      .field("title", "")
+      .field("summary", "another one")
+      .field("role", "USER")
+      .field("email", "mitch@email.com")
+      .field("password", "password")
+      .attach("image", "public/test/Let.jpeg");
+    const { status } = testReq;
+    assert.strictEqual(status, 400);
+  });
+  it("Should return a 400 Bad Request if field (summary) does not pass validation", async () => {
+    const testReq = await superTest
+      .post("/api/auth/register")
+      .field("firstName", "Zach")
+      .field("lastName", "Arnold")
+      .field("title", "string")
+      .field("summary", "")
+      .field("role", "USER")
+      .field("email", "mitch@email.com")
+      .field("password", "password")
+      .attach("image", "public/test/Let.jpeg");
+    const { status } = testReq;
+    assert.strictEqual(status, 400);
+  });
+  it("Should return a 400 Bad Request if field (role) does not pass validation", async () => {
+    const testReq = await superTest
+      .post("/api/auth/register")
+      .field("firstName", "Zach")
+      .field("lastName", "Arnold")
+      .field("title", "string")
+      .field("summary", "another one")
+      .field("role", "user")
+      .field("email", "mitch@email.com")
+      .field("password", "password")
+      .attach("image", "public/test/Let.jpeg");
+    const { status } = testReq;
+    assert.strictEqual(status, 400);
+  });
+  it("Should return a 400 Bad Request if field (password) does not pass validation", async () => {
+    const testReq = await superTest
+      .post("/api/auth/register")
+      .field("firstName", "Zach")
+      .field("lastName", "Arnold")
+      .field("title", "string")
+      .field("summary", "another one")
+      .field("role", "USER")
+      .field("email", "mitch@email.com")
+      .field("password", "")
+      .attach("image", "public/test/Let.jpeg");
+    const { status } = testReq;
+    assert.strictEqual(status, 400);
+  });
+  // This one's special as the error should be thrown by multer as opposed to validation.
+  it("Should return a 505 Bad Request if field (image) does not pass validation", async () => {
+    const testReq = await superTest
+      .post("/api/auth/register")
+      .field("firstName", "Zach")
+      .field("lastName", "Arnold")
+      .field("title", "string")
+      .field("summary", "another one")
+      .field("role", "USER")
+      .field("email", "mitch@email.com")
+      .field("password", "password");
+    const { status } = testReq;
+    assert.strictEqual(status, 505);
+  });
+
   await User.destroy({
     where: {
       email: "mitch@email.com",
     },
   });
-
-  it("Should return a 400 Bad Request if field (firstName) does not pass validation", () => {});
-  it("Should return a 400 Bad Request if field (lastName) does not pass validation", () => {});
-  it("Should return a 400 Bad Request if field (title) does not pass validation", () => {});
-  it("Should return a 400 Bad Request if field (summary) does not pass validation", () => {});
-  it("Should return a 400 Bad Request if field (role) does not pass validation", () => {});
-  it("Should return a 400 Bad Request if field (password) does not pass validation", () => {});
-  it("Should return a 400 Bad Request if field (image) does not pass validation", () => {});
 
   server.close();
 });

@@ -22,6 +22,7 @@ describe("User Services", () => {
           skills: "None, None at all",
         },
       };
+      // @ts-ignore Trying to use code to break the program. of course ts isn't happy
       expect(userCleanUp(body)).toStrictEqual({
         id: 1,
         firstName: "Zach",
@@ -37,6 +38,7 @@ describe("User Services", () => {
       });
     });
     it("Should, Given no input, Return an Error", () => {
+      // @ts-ignore Break Code, No Happy
       expect(() => userCleanUp()).toThrowError();
     });
   });
