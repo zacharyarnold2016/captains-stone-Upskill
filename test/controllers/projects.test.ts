@@ -110,7 +110,6 @@ describe("Project Controller: Testing Response Code Formats", () => {
   });
 
   describe("getAllProjects", () => {
-
     it("Should respond with an Error Message and a 505", async () => {
       mockedProject.findAndCountAll.mockImplementationOnce(async () => {
         throw Error("Error");
