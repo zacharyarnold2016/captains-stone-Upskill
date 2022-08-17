@@ -42,7 +42,7 @@ const configs: {
       port: 3306,
       username: "dev",
       password: "dev",
-      database: "test",
+      database: "capstone_project",
     },
     redis: {
       host: "localhost",

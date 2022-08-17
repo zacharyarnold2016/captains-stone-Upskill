@@ -11,12 +11,6 @@ const login = async (
 ) => {
   passport.authenticate("login", async (err, user) => {
     if (err || !user) {
-      if (!user) {
-        res
-          .status(404)
-          .json({ error: "User with that Email/Password not found" });
-        return next(err);
-      }
       return res.status(400).send(next(err));
     }
     req.logIn(user, { session: false }, async (error: Error) => {

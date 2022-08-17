@@ -18,7 +18,7 @@
     "format": "npx prettier --write src/**/*.ts test/**/*.ts",
     "test:unit": "cross-env NODE_ENV=test jest --coverage",
     "test:coverage": "jest --coverage -c",
-    "test": "cross-env NODE_ENV=development env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha --exit -r ts-node/register 'test/routes/*'"
+    "test": "cross-env NODE_ENV=development env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha --exit -r ts-node/register 'test/routes/**/*'"
   },
   "jest": {
     "preset": "ts-jest/presets/default-esm",

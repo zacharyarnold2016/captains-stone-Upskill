@@ -2,14 +2,13 @@ import assert from "assert";
 import loadApp from "../../src/loaders/app";
 import request from "supertest";
 import { User } from "../../src/models/user.model";
-import { Op } from "sequelize";
 
-// Will Replace awful use of "a" variable once i've made sure this all works properly
-describe("app", async () => {
+describe("app registration", async () => {
   const app = await loadApp();
   const superTest = request(app);
 
   const server = app.listen();
+
   it("Should Pass through all validation and return 200 Ok on a successful run", async () => {
     const testReq = await superTest
       .post("/api/auth/register")
@@ -21,6 +20,7 @@ describe("app", async () => {
       .field("email", "mitch@email.com")
       .field("password", "password")
       .attach("image", "public/test/Let.jpeg");
+    // @ts-ignore
     const { body } = testReq;
     const { status } = testReq;
     assert.strictEqual(status, 200);
@@ -43,7 +43,6 @@ describe("app", async () => {
       .field("password", "password")
       .attach("image", "public/test/Let.jpeg");
     const { body } = testReq;
-    console.log(body);
     const { id, image } = body;
     const { status } = testReq;
     assert.deepStrictEqual(body, {
@@ -141,7 +140,7 @@ describe("app", async () => {
     const { status } = testReq;
     assert.strictEqual(status, 400);
   });
-  // This one's special as the error should be thrown by multer as opposed to validation.
+  // error should be thrown by multer as opposed to validation.
   it("Should return a 505 Bad Request if field (image) does not pass validation", async () => {
     const testReq = await superTest
       .post("/api/auth/register")
